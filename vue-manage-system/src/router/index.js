@@ -1,7 +1,14 @@
 import Vue from 'vue';
-import Router from 'vue-router';
+import Router from 'vue-router/dist/vue-router.min.js';
 
 Vue.use(Router);
+
+// 此处代码是为了解决单个关闭Tags时，当关闭最后一个tag时报错问题
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 const tabs = r => require.ensure([], () => r(require('../components/page/Tabs.vue')), 'tabs');
 /***********************************运营管理******************************/
 const base_cooperation = r => require.ensure([], () => r(require('../components/page/operation/base_cooperation.vue')), 'base_cooperation');
