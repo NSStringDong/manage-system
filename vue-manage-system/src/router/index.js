@@ -12,6 +12,7 @@ Router.prototype.push = function push(location) {
 const tabs = r => require.ensure([], () => r(require('../components/page/Tabs.vue')), 'tabs');
 /***********************************运营管理******************************/
 const base_cooperation = r => require.ensure([], () => r(require('../components/page/operation/base_cooperation.vue')), 'base_cooperation');
+const partnerDetail = r => require.ensure([], () => r(require('../components/page/operation/base_cooperation_detail.vue')), 'base_cooperation_detail');
 const base_fee = r => require.ensure([], () => r(require('../components/page/operation/base_fee.vue')), 'base_fee');
 const base_rule = r => require.ensure([], () => r(require('../components/page/operation/base_rule.vue')), 'base_rule');
 const base_user = r => require.ensure([], () => r(require('../components/page/operation/base_user.vue')), 'base_user');
@@ -99,6 +100,12 @@ export default new Router({
             component: base_cooperation,
             meta: { 
                 title: '合作伙伴' 
+            }
+        }, {
+            path: '/base_cooperation_detail',
+            component: partnerDetail,
+            meta: {
+                title: '合作伙伴详情'
             }
         }, {
             path: '/base_fee',

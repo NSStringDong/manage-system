@@ -24,10 +24,11 @@ Vue.prototype.$md5 = md5;
 // 遍历filters，绑定到全局
 Object.keys(filters).forEach((item) => {
     Vue.filter(item, filters[item]);
-})
+});
 
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
+    console.log(to);
     document.title = `${to.meta.title}`;
     if (to.path === '/login') {
         next();

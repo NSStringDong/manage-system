@@ -16,11 +16,13 @@ body,
 body {
     font-family: 'PingFang SC', "Helvetica Neue", Helvetica, "microsoft yahei", arial, STHeiTi, sans-serif;
 }
+ul {
+    list-style: none;
+}
 
 a {
     text-decoration: none
 }
-
 
 .content-box {
     position: absolute;
@@ -38,7 +40,7 @@ a {
     width: auto;
     height: 100%;
     padding: 10px;
-    overflow-y: scroll;
+    overflow-y: auto;
     box-sizing: border-box;
 }
 
@@ -52,7 +54,51 @@ a {
     border: 1px solid #ddd;
     border-radius: 5px;
 }
+/*public settings*/
+.list-content {
+    background-color: #fff;
+    padding: 10px;
+}
 
+.top-break {
+    overflow: hidden;
+}
+.tab-ul {
+    border: 1px solid #dcdcdc;
+    border-bottom: none;
+}
+.tab-ul li {
+    border-bottom: 1px solid #dcdcdc;
+    padding: 13px 50px;
+    line-height: 1.2;
+    overflow: hidden;
+}
+.tab-ul li h2 {
+    word-break: break-all;
+    word-wrap: break-word;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 20px;
+    float: left;
+    color: #8d8d8d;
+    width: 150px;
+}
+.tab-ul li p {
+    width: 500px;
+    word-wrap: break-word;
+    word-break: break-all;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 20px;
+    float: left;
+}
+.tab-ul li a {
+    float: right;
+    font-size: 14px;
+}
+.firstItem {
+    background-color: #f4f5f9;
+}
 .crumbs {
     margin: 10px 0;
 }
