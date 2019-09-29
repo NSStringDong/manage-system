@@ -110,6 +110,7 @@
 			getPartnerList(currentPage) {
 				let self = this;
 				self.nowPage = currentPage;
+				self.tableData = [];
 				let postData = {
 					num: 20,
 					page: currentPage,

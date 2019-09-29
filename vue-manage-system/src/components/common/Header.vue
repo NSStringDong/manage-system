@@ -4,9 +4,26 @@
         <div class="collapse-btn" @click="collapseChage">
             <i v-if="!collapse" class="el-icon-s-fold"></i>
             <i v-else class="el-icon-s-unfold"></i>
+            <span class="logo">小绿人后台管理系统</span>
         </div>
-        <div class="logo">小绿人后台管理系统</div>
+        <!-- <div class="logo">小绿人后台管理系统</div> -->
+        <!-- <div class="header-menu">
+            <el-menu mode="horizontal">
+                <el-menu-item index="0">内容中心</el-menu-item>
+                <el-menu-item index="1">运营中心</el-menu-item>
+                <el-menu-item index="2">应用中心</el-menu-item>
+                <el-menu-item index="3">系统管理</el-menu-item>
+            </el-menu>
+        </div> -->
         <div class="header-right">
+            <div class="header-menu">
+                <el-menu mode="horizontal" :default-active="onRoutes?onRoutes:''" :router="true">
+                    <el-menu-item index="0">内容中心</el-menu-item>
+                    <el-menu-item index="base_cooperation">运营中心</el-menu-item>
+                    <el-menu-item index="2">应用中心</el-menu-item>
+                    <el-menu-item index="system_user">系统管理</el-menu-item>
+                </el-menu>
+            </div>
             <div class="header-user-con">
                 <!-- 全屏显示 -->
                 <div class="btn-fullscreen" @click="handleFullScreen">
@@ -56,6 +73,10 @@ export default {
         };
     },
     computed: {
+        onRoutes() {
+            console.log(`侧边路由:${this.$route.path.replace('/', '')}`);
+            return this.$route.path.replace('/', '');
+        },
         username() {
             let username = localStorage.getItem('ms_username');
             return username ? username : this.name;
@@ -116,8 +137,13 @@ export default {
         box-sizing: border-box;
         width: 100%;
         height: 70px;
-        font-size: 22px;
-        color: #fff;
+        font-size: 24px;
+        color: #79bd3b;
+        /*color: #fff;*/
+        font-weight: bolder;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
     .collapse-btn {
         float: left;
@@ -126,18 +152,40 @@ export default {
         line-height: 70px;
     }
     .header .logo {
-        float: left;
+        /*float: left;*/
+        padding-left: 20px;
         width: 250px;
         line-height: 70px;
     }
     .header-right {
         float: right;
         padding-right: 50px;
+        display: flex;
     }
     .header-user-con {
         display: flex;
         height: 70px;
         align-items: center;
+    }
+    .header-menu {
+        height: 70px;
+    }
+    .header-menu .el-menu {
+        height: 100%;
+        background-color: #242f42;
+    }
+    .header-menu .el-menu--horizontal>.el-menu-item {
+        height: 100%;
+        line-height: 70px;
+    }
+    .header-menu .el-menu--horizontal>.el-menu-item:hover {
+        background-color: rgb(40, 52, 70);
+        color: rgb(191, 203, 217);
+    }
+    .header-menu .el-menu--horizontal>.el-menu-item.is-active {
+        border-bottom: 3px solid #79bd3b;
+        color: #79bd3b;
+        background-color: #242f42;
     }
     .btn-fullscreen {
         transform: rotate(45deg);

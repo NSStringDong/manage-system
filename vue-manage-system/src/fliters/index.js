@@ -34,6 +34,11 @@ export let getPartnerType = function (type) {
 			break;
 	}
 }
+/**
+ * 分成类型
+ * @param  {Number} type 类型码
+ * @return {String}      类型描述
+ */
 export let getProrationType = function (type) {
 	switch (type) {
 		case 1:
@@ -71,6 +76,61 @@ export let getProrationType = function (type) {
 			break;
 		default:
 			return '';
+			break;
+	}
+}
+/**
+ * 结算周期
+ * @param  {Number} type 类型码
+ * @return {String}      周期描述
+ */
+export let getTimecycleType = function (type) {
+	switch (type) {
+		case 1:
+			return '日结';
+			break;
+		case 2:
+			return '周结';
+			break;
+		case 3:
+			return '月结';
+			break;
+		case 4:
+			return '季结';
+			break;
+		case 5:
+			return '半月结';
+			break;
+		case 6:
+			return '半年';
+			break;
+		case 7:
+			return '两月结';
+			break;
+		case 8:
+			return '实时结算';
+			break;
+		default:
+			return '';
+			break;
+	}
+}
+/**
+ * 公司主体类型
+ * @param  {Number} type 类型码
+ * @return {String}      类型描述
+ */
+export let getXlvrenType = function (type) {
+	switch (type) {
+		case 1:
+			return "深圳市绿色星球互联新能源科技有限公司";
+			break;
+		case 2:
+			return "北京绿星小绿人科技有限公司";
+			break;
+		default:
+			return "";
+			break;
 			break;
 	}
 }

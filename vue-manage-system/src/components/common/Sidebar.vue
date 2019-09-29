@@ -1,6 +1,7 @@
 <template>
 	<div class="sidebar">
 		<el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#324157" text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
+		<!-- <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#3f3f3f" text-color="#ffffff" active-text-color="#79bd3b" unique-opened router> -->
 			<template v-for="item in items">
 				<template v-if="item.subs">
 					<el-submenu :index="item.index" :key="item.index">
@@ -247,6 +248,7 @@ export default {
 	},
 	computed: {
 		onRoutes() {
+			console.log(`侧边路由:${this.$route.path.replace('/', '')}`);
 			return this.$route.path.replace('/', '');
 		}
 	},

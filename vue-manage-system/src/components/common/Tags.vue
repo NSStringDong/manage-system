@@ -59,10 +59,15 @@
             },
             // 设置标签
             setTags(route){
+                // console.log(route);
                 const isExist = this.tagsList.some(item => {
+                    // console.log(`数组名称：${item.path}`);
+                    // console.log(`路由名称：${route.fullPath}`);
                     return item.path === route.fullPath;
                 })
+                console.log(isExist);
                 if(!isExist){
+                    // console.log(`我被执行`);
                     if(this.tagsList.length >= 8){
                         this.tagsList.shift();
                     }
@@ -85,6 +90,7 @@
         },
         watch:{
             $route(newValue, oldValue){
+                // console.info('监听开始:'+newValue);
                 this.setTags(newValue);
             }
         },
