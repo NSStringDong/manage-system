@@ -79,7 +79,7 @@ module.exports = {
 	},
 	resolve: {
         alias: {
-            'vue$': 'vue/dist/vue.esm.js'
+            'vue$': 'vue/dist/vue.runtime.esm.js'
         },
         extensions: ['*', '.js', '.vue', '.json']
     },
@@ -105,6 +105,7 @@ module.exports = {
 		new CleanWebpackPlugin()
 	],
 	devServer: {
+		contentBase: './dist',
 		host: 'localhost',
 		port: 9000,
 		open: true,

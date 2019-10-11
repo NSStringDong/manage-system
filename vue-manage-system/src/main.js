@@ -14,6 +14,8 @@ import md5 from 'js-md5'
 import {httpRequest} from './utils/httpRequest.js'
 
 Vue.config.productionTip = false;
+Vue.config.devtools = true;
+
 Vue.use(ElementUI, {
     size: 'small'
 });

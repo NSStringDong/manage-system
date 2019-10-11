@@ -3,9 +3,9 @@
   "version": "4.1.0",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --config webpack.config.js --mode development",
+    "dev": "npm run serve",
     "serve": "vue-cli-service serve",
-    "build": "webpack --config webpack.config.js --mode production"
+    "build": "vue-cli-service build"
   },
   "dependencies": {
     "axios": "^0.18.0",
