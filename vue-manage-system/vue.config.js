@@ -1,4 +1,4 @@
-module.exports = {
+/*module.exports = {
     publicPath: './',
     assetsDir: 'static',
     productionSourceMap: false,
@@ -13,4 +13,4 @@ module.exports = {
     //         }
     //     }
     // }
-}
+}*/
