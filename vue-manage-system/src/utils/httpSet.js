@@ -8,7 +8,7 @@ const httpSet = axios.create({
 });
 
 // 设置使用cookies
-httpSet.defaults.withCredentials = false;
+httpSet.defaults.withCredentials = true;
 
 httpSet.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 

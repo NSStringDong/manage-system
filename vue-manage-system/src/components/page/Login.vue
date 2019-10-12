@@ -52,22 +52,22 @@
                 //         return false;
                 //     }
                 // });
-                var self = this;
-                self.param.password = this.$md5(self.param.password);
-                this.$http({
+                let self = this;
+                self.param.password = self.$md5(self.param.password);
+                self.$http({
                     url: "systemUser/login.json",
                     method: 'GET',
                     data: self.param
                 }).then((res) => {
                     if (res) {
-                        this.$message.success('登录成功');
+                        self.$message.success('登录成功');
                         localStorage.setItem('ms_username', res.realName);
-                        this.$router.replace({
-                            path: '/'
+                        self.$router.replace({
+                            path: '/dashboard'
                         })
                     }
                 }).catch((error) => {
-                    
+
                 })
             }
         }
