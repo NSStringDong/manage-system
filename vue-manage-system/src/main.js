@@ -36,6 +36,7 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
         next();
     } else {
+        /*
         httpRequest({
             url: "systemUser/getUserInfo.json",
             method: 'GET',
@@ -47,6 +48,8 @@ router.beforeEach((to, from, next) => {
                 next()
             }
         });
+        */
+       next();
     }
     /*
     const role = localStorage.getItem('ms_username');

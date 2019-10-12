@@ -57,6 +57,7 @@
 	</div>
 </template>
 <script type="text/javascript">
+	import {requestData} from '../../../utils/data.js';
 	export default {
 		name: 'base_cooperation',
 		data() {
@@ -117,6 +118,7 @@
 					key: self.key,
 					partnerType: self.partnerType
 				};
+				/*
 				this.$http({
 					url: 'listPartner.json',
 					method: 'GET',
@@ -124,6 +126,8 @@
 				}).then(res => {
 					self.tableData = res;
 				})
+				*/
+				self.tableData = requestData.data;
 			},
 			goToDetail(item) {
 				this.$router.push({

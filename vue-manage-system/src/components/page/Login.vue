@@ -52,6 +52,12 @@
                 //         return false;
                 //     }
                 // });
+                this.$message.success('登录成功');
+                localStorage.setItem('ms_username', '测试人员');
+                this.$router.replace({
+                    path: '/'
+                })
+                /*
                 let self = this;
                 self.param.password = self.$md5(self.param.password);
                 self.$http({
@@ -69,6 +75,7 @@
                 }).catch((error) => {
 
                 })
+                */
             }
         }
     };
