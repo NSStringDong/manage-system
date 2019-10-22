@@ -1,5 +1,5 @@
 .header{
-    background-color: #79bd3b;
+    background-color: #242f42;
 }
 .login-wrap{
     background: #3f3f3f;
@@ -8,20 +8,20 @@
     background: #eef1f6;
 }
 .plugins-tips a{
-    color: #67c23a;
+    color: #32B16C;
 }
 .el-upload--text em {
-    color: #67c23a;
+    color: #32B16C;
 }
 .pure-button{
-    background: #67c23a;
+    background: #32B16C;
 }
 .tags-li.active {
-    border: 1px solid #79bd3b;
-    background-color: #79bd3b;
+    border: 1px solid #32B16C;
+    background-color: #32B16C;
 }
 .message-title{
-    color: #67c23a;
+    color: #32B16C;
 }
 .collapse-btn:hover{
     background: #3f3f3f;

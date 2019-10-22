@@ -222,3 +222,33 @@ a {
 .v-note-wrapper .v-note-panel {
     min-height: 500px;
 }
+.search-content {
+    /*height: 92px;*/
+    padding-top: 15px;
+    display: flex;
+}
+.search-input {
+    width: 35%;
+    /*margin-left: 16px;*/
+    flex: 60px;
+}
+.search-btn {
+    width: 60%;
+    /*flex: 1;*/
+}
+.new-btn {
+    /*margin-right: 16px;*/
+    float: right;
+}
+.salary-date {
+    width: 120px !important;
+}
+.right {
+    margin-right: 10px !important;
+}
+.left {
+    margin-left: 10px !important;
+}
+.table-content {
+    margin-top: 25px;
+}

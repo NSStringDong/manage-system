@@ -32,14 +32,14 @@
                     </el-tooltip>
                 </div>
                 <!-- 消息中心 -->
-                <div class="btn-bell">
+                <!-- <div class="btn-bell">
                     <el-tooltip effect="dark" :content="message?`有${message}条未读消息`:`消息中心`" placement="bottom">
                         <router-link to="/tabs">
                             <i class="el-icon-bell"></i>
                         </router-link>
                     </el-tooltip>
                     <span class="btn-bell-badge" v-if="message"></span>
-                </div>
+                </div> -->
                 <!-- 用户头像 -->
                 <div class="user-avator">
                     <img src="../../assets/img/img.jpg" />
@@ -51,9 +51,6 @@
                         <i class="el-icon-caret-bottom"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                        <a href="https://github.com/lin-xin/vue-manage-system" target="_blank">
-                            <el-dropdown-item>项目仓库</el-dropdown-item>
-                        </a>
                         <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -138,7 +135,7 @@ export default {
         width: 100%;
         height: 70px;
         font-size: 24px;
-        color: #79bd3b;
+        color: #32B16C;
         /*color: #fff;*/
         font-weight: bolder;
         display: flex;
@@ -183,8 +180,8 @@ export default {
         color: rgb(191, 203, 217);
     }
     .header-menu .el-menu--horizontal>.el-menu-item.is-active {
-        border-bottom: 3px solid #79bd3b;
-        color: #79bd3b;
+        border-bottom: 3px solid #32B16C;
+        color: #32B16C;
         background-color: #242f42;
     }
     .btn-fullscreen {

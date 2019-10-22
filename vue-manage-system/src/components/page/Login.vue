@@ -1,79 +1,108 @@
 <template>
     <div class="login-wrap">
         <div class="ms-login">
-            <div class="ms-title">小绿人后台管理系统</div>
-            <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
-                <el-form-item prop="username">
-                    <el-input v-model="param.username" placeholder="username">
-                        <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
-                    </el-input>
-                </el-form-item>
-                <el-form-item prop="password">
-                    <el-input type="password" placeholder="password" v-model="param.password" @keyup.enter.native="submitForm()">
-                        <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
-                    </el-input>
-                </el-form-item>
-                <div class="login-btn">
-                    <el-button type="primary" @click="submitForm()">登录</el-button>
+            <el-card class="box-card">
+                <!-- <img :src="login_url" class="image"> -->
+                <div class="ms-title">小绿人后台管理系统</div>
+                <div>
+                    <el-form :model="loginData" :rules="loginRule" ref="loginForm" status-icon label-width="100px" class="demo-ruleForm">
+                        <el-form-item prop="username">
+                            <el-input placeholder="手机号/账户名" v-model="loginData.username" prefix-icon="el-icon-edit" autocomplete="off">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item prop="password">
+                            <el-input type="password" placeholder="密码" v-model="loginData.password" prefix-icon="el-icon-edit" autocomplete="off">  
+                            </el-input>
+                        </el-form-item>
+                        <div class="remeberCheck">
+                            <el-checkbox style="margin-left:0px;">记住我</el-checkbox>
+                            <span class="forgetPsd">
+                                <a href="javascript:void(0)">忘记密码？</a>
+                            </span>
+                        </div>
+                        
+                        <el-button type="primary" :disabled="isDisable" @click="loginIn()">登录</el-button>
+                        
+                        <div class="remeberCheck" style="padding-top: 10px;">
+                            <!-- <el-checkbox style="margin-left:0px;">记住我</el-checkbox> -->
+                            <span class="forgetPsd">
+                                <a href="javascript:void(0)">注册账户</a>
+                            </span>
+                        </div>
+                    </el-form>
                 </div>
-                <p class="login-tips">Tips : 用户名和密码随便填。</p>
-            </el-form>
+            </el-card>
         </div>
     </div>
 </template>
 
 <script type="text/javascript">
     export default {
-        data: function() {
-            return {
-                param: {
-                    username: '',
-                    password: '',
-                },
-                rules: {
-                    username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-                    password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-                },
+        name: 'login',
+        data: function(){
+            var validateUser = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入账户'));
+                    this.isDisable = true;
+                } else {
+                    if (this.loginData.password !== '') {
+                        this.$refs.loginForm.validateField('password');
+                    }
+                    callback();
+                }
             };
+            var validatePass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入密码'));
+                    this.isDisable = true;
+                }else if (value.length < 6) {
+                    callback(new Error('密码不得小于六位'));
+                    this.isDisable = true;
+                } else {
+                    this.isDisable = false;
+                    callback();
+                }
+            };
+            return {
+                loginData: {
+                    username: '',
+                    password: ''
+                },
+                loginRule: {
+                    username: [
+                        { validator: validateUser, trigger: 'blur' }
+                    ],
+                    password: [
+                        { validator: validatePass, trigger: 'blur' }
+                    ]
+                },
+                isDisable: true
+                // login_url: loginHeaderImg
+            }
         },
         created() {
-            console.log(this.$http);
+
         },
         methods: {
-            submitForm() {
-                // this.$refs.login.validate(valid => {
-                //     if (valid) {
-                //         this.$message.success('登录成功');
-                //         localStorage.setItem('ms_username', this.param.username);
-                //         this.$router.push('/');
-                //     } else {
-                //         this.$message.error('请输入账号和密码');
-                //         console.log('error submit!!');
-                //         return false;
-                //     }
-                // });
+            loginIn() {
                 this.$message.success('登录成功');
                 localStorage.setItem('ms_username', '测试人员');
                 this.$router.replace({
                     path: '/'
                 })
                 /*
-                let self = this;
-                self.param.password = self.$md5(self.param.password);
-                self.$http({
+                var self = this;
+                self.loginData.password = this.$md5(self.loginData.password);
+                httpRequest({
                     url: "systemUser/login.json",
                     method: 'GET',
-                    data: self.param
+                    data: self.loginData
                 }).then((res) => {
                     if (res) {
-                        self.$message.success('登录成功');
-                        localStorage.setItem('ms_username', res.realName);
-                        self.$router.replace({
+                        this.$router.replace({
                             path: '/dashboard'
                         })
                     }
-                }).catch((error) => {
-
                 })
                 */
             }
@@ -82,45 +111,72 @@
 </script>
 
 <style scoped>
-    .login-wrap {
+    .login-wrap{
         position: relative;
-        width: 100%;
-        height: 100%;
+        width:100%;
+        height:100%;
+        /*background-image: url(../../assets/login-bg.jpg);*/
+        text-align: center;
+        vertical-align: middle;
+        background: #f3f3f3;
         background-image: url(../../assets/img/login-bg.jpg);
         background-size: 100%;
+        background-repeat: no-repeat;
+    }
+    .ms-login {
+        width: 380px;
+        height: 420px;
+        margin: auto;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        position: absolute;
     }
     .ms-title {
         width: 100%;
-        line-height: 50px;
+        /*line-height: 50px;*/
         text-align: center;
-        font-size: 20px;
-        color: #fff;
-        border-bottom: 1px solid #ddd;
+        font-size: 24px;
+        /*color: rgb(90, 174, 114);*/
+        color: #32B16C;
+        font-weight: border;
+        /*border-bottom: 1px solid #ddd;*/
     }
-    .ms-login {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 350px;
-        margin: -190px 0 0 -175px;
-        border-radius: 5px;
-        background: rgba(255, 255, 255, 0.3);
-        overflow: hidden;
+    .clearfix {
+        /*background: url(../assets/imgs/login.png);*/
     }
-    .ms-content {
-        padding: 30px 30px;
+    .el-input{
+        margin-top: 22px;
     }
-    .login-btn {
-        text-align: center;
+    .el-checkbox {
+        float: left;
     }
-    .login-btn button {
+    .remeberCheck {
         width: 100%;
-        height: 36px;
-        margin-bottom: 10px;
+        height: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
     }
-    .login-tips {
-        font-size: 12px;
-        line-height: 30px;
-        color: #fff;
+    .forgetPsd {
+        float: right;
+        height: 19px;
+        line-height: 19px;
+    }
+    .forgetPsd a {
+        font-size: 14px;
+        color: #409eff;
+    }
+    .forgetPsd a:hover{
+        text-decoration: underline;
+    }
+    .el-button {
+        width: 100%;
+    }
+    .el-form-item {
+        margin-bottom: 0px;
+    }
+    .box-card>>>.el-form-item div {
+        margin-left: 0px !important; 
     }
 </style>

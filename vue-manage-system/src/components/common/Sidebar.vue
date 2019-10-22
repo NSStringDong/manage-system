@@ -1,6 +1,6 @@
 <template>
 	<div class="sidebar">
-		<el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#324157" text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
+		<el-menu class="sidebar-el-menu" id="lastclass" :default-active="onRoutes" :collapse="collapse" background-color="#324157" text-color="#bfcbd9" active-text-color="#32B16C" unique-opened router>
 		<!-- <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#3f3f3f" text-color="#ffffff" active-text-color="#79bd3b" unique-opened router> -->
 			<template v-for="item in items">
 				<template v-if="item.subs">
@@ -252,6 +252,15 @@ export default {
 			return this.$route.path.replace('/', '');
 		}
 	},
+	watch: {
+		// collapse:function(){
+  //           this.collapse=!this.collapse;
+  //           var uiwidth = document.getElementById('lastclass');
+  //           if(uiwidth.offsetHeight===0){
+  //               uiwidth.style.height = "100%"
+  //           }
+  //       }
+	},
 	created() {
 		// 通过 Event Bus 进行组件间通信，来折叠侧边栏
 		bus.$on('collapse', msg => {
@@ -275,8 +284,16 @@ export default {
 	}
 	.sidebar-el-menu:not(.el-menu--collapse) {
 		width: 170px;
+		height: 100%;
 	}
 	.sidebar > ul {
 		height: 100%;
+	}
+	.el-submenu .el-menu-item {
+	    height: 50px;
+	    line-height: 50px;
+	    padding: 0 20px 0 50px !important;
+	    /*text-align: center;*/
+	    min-width: 170px; 
 	}
 </style>
