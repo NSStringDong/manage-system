@@ -12,7 +12,7 @@
 				</el-input>
 			</div>
 			<div class="search-btn">
-				<el-button class="new-btn" type="primary" @click="isNew=true">新增用户</el-button>
+				<el-button class="new-btn" type="primary" @click="isNew=true">新增角色</el-button>
 			</div>
 		</div>
 		<div class="table-content">
@@ -26,7 +26,7 @@
 				<el-table-column align="center" prop="registTime" label="添加时间"></el-table-column>
 				<el-table-column align="center" label="操作" width="280px">
 					<template slot-scope="scope">
-						<el-button type="warning" samll @click="goToDetail(scope.row)">分配角色</el-button>
+						<el-button type="warning" samll @click="goToDetail(scope.row)">分配菜单</el-button>
 						<el-button type="primary" samll @click="goToDetail(scope.row)">编辑</el-button>
 						<el-button type="danger" samll @click="goToDetail(scope.row)">删除</el-button>
 					</template>
@@ -64,7 +64,7 @@
 <script type="text/javascript">
 	import {userData} from '../../../utils/data.js';
 	export default {
-		name: 'system_user',
+		name: 'system_player',
 		data() {
 			return {
 				key: '',

@@ -36,11 +36,11 @@ export default {
 		return {
 			collapse: false,
 			items: [{
-				icon: 'el-icon-lx-home',
+				icon: 'el-icon-s-platform',
 				index: 'dashboard',
 				title: '系统首页'
 			}, {
-				icon: 'el-icon-coin',
+				icon: 'el-icon-s-cooperation',
 				index: 'operation',
 				title: '运营管理',
 				subs: [{
@@ -72,7 +72,7 @@ export default {
 					title: '退补申请'
 				}]
 			}, {
-				icon: 'el-icon-shopping-cart-full',
+				icon: 'el-icon-s-management',
 				index: 'presale',
 				title: '售前管理',
 				subs: [{
@@ -121,7 +121,7 @@ export default {
 					title: 'sim卡管理'
 				}]
 			}, {
-				icon: 'el-icon-bell',
+				icon: 'el-icon-message-solid',
 				index: 'defend',
 				title: '维护',
 				subs: [{
@@ -222,12 +222,15 @@ export default {
 					title: '绩效分析'
 				}]
 			}, {
-				icon: 'el-icon-setting',
+				icon: 'el-icon-s-tools',
 				index: 'system',
 				title: '系统管理',
 				subs: [{
 					index: 'system_user',
-					title: '操作员管理'
+					title: '用户管理'
+				}, {
+					index: 'system_player',
+					title: '角色管理'
 				}, {
 					index: 'system_right',
 					title: '权限管理'

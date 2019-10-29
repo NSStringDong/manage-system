@@ -76,6 +76,7 @@ const performance_analys = r => require.ensure([], () => r(require('../component
 /***********************************绩效管理END******************************/
 /***********************************系统管理*********************************/
 const system_user = r => require.ensure([], () => r(require('../components/page/system/system_user.vue')), 'system_user');
+const system_player = r => require.ensure([], () => r(require('../components/page/system/system_player.vue')), 'system_player');
 const system_right = r => require.ensure([], () => r(require('../components/page/system/system_right.vue')), 'system_right');
 /***********************************系统管理END******************************/
 
@@ -393,7 +394,13 @@ export default new Router({
             path: '/system_user',
             component: system_user,
             meta: {
-                title: '操作员管理'
+                title: '用户管理'
+            }
+        }, {
+            path: '/system_player',
+            component: system_player,
+            meta: {
+                title: '角色管理'
             }
         }, {
             path: '/system_right',
