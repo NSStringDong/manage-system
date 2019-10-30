@@ -102,7 +102,7 @@
 			}
 		},
 		created() {
-			this.getPartnerList(1);
+			this.getUserList(1);
 		},
 		mounted() {
 
@@ -112,11 +112,11 @@
 		},
 		methods: {
 			/**
-			 * 获取合作伙伴列表
+			 * 获取用户列表
 			 * @param  {Number} currentPage 当前页数
-			 * @return {Array}             伙伴数组
+			 * @return {Array}             列表数组
 			 */
-			getPartnerList(currentPage) {
+			getUserList(currentPage) {
 				let self = this;
 				self.nowPage = currentPage;
 				self.tableData = [];
@@ -155,7 +155,7 @@
 				if (self.partnerType== null || self.partnerType == undefined) {
 					self.partnerType = '';
 				}
-				self.getPartnerList(self.nowPage);
+				self.getUserList(self.nowPage);
 			}
 		},
 		filters: {

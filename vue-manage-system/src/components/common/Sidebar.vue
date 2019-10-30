@@ -229,6 +229,9 @@ export default {
 					index: 'system_user',
 					title: '用户管理'
 				}, {
+					index: 'system_form',
+					title: '组织管理'
+				}, {
 					index: 'system_player',
 					title: '角色管理'
 				}, {

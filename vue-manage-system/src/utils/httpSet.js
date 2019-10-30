@@ -1,6 +1,7 @@
 import {axiosConfig} from '../utils/httpConfig.js'
 import axios from 'axios'
 import {Message} from 'element-ui'
+import router from '../router/index.js'
 
 const httpSet = axios.create({
 	baseURL: axiosConfig.baseUrl,
@@ -10,9 +11,9 @@ const httpSet = axios.create({
 // 设置使用cookies
 httpSet.defaults.withCredentials = true;
 
-httpSet.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+httpSet.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 
-httpSet.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+httpSet.defaults.headers.get['Content-Type'] = 'application/json;charset=UTF-8';
 
 httpSet.defaults.responseType = 'json';
 
@@ -42,17 +43,21 @@ httpSet.interceptors.request.use(
 // response拦截器=>对响应做处理
 httpSet.interceptors.response.use(
 	function (response) {
+		console.info('response', response);
 		// 成功请求到数据
 		// 根据返回的数据做对应的处理
 		if (response.status == 200) {
 			const data = response.data;
-			if (data.errorCode >= 0) {
+			if (data.code >= 0) {
 				return data;
-			} else if (data.errorCode == -100) {
+			} else if (data.code == -100) {
 				Message({
 					showClose: true,
 					message: data.msg,
 					type: 'error'
+				});
+				router.replace({
+					path: '/login'
 				});
 			} else {
 				Message({
@@ -60,6 +65,7 @@ httpSet.interceptors.response.use(
 					message: data.msg,
 					type: 'error'
 				});
+				return data;
 			}
 		} else {
 			// console.info(`请求返回：${JSON.stringify(response)}`);

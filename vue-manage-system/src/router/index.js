@@ -10,6 +10,7 @@ Router.prototype.push = function push(location) {
 }
 
 const tabs = r => require.ensure([], () => r(require('../components/page/Tabs.vue')), 'tabs');
+const login = r => require.ensure([], () => r(require('../components/page/Login.vue')), 'login');
 /***********************************运营管理******************************/
 const base_cooperation = r => require.ensure([], () => r(require('../components/page/operation/base_cooperation.vue')), 'base_cooperation');
 const partnerDetail = r => require.ensure([], () => r(require('../components/page/operation/base_cooperation_detail.vue')), 'base_cooperation_detail');
@@ -76,6 +77,7 @@ const performance_analys = r => require.ensure([], () => r(require('../component
 /***********************************绩效管理END******************************/
 /***********************************系统管理*********************************/
 const system_user = r => require.ensure([], () => r(require('../components/page/system/system_user.vue')), 'system_user');
+const system_form = r => require.ensure([], () => r(require('../components/page/system/system_form.vue')), 'system_form');
 const system_player = r => require.ensure([], () => r(require('../components/page/system/system_player.vue')), 'system_player');
 const system_right = r => require.ensure([], () => r(require('../components/page/system/system_right.vue')), 'system_right');
 /***********************************系统管理END******************************/
@@ -397,6 +399,12 @@ export default new Router({
                 title: '用户管理'
             }
         }, {
+            path: '/system_form',
+            component: system_form,
+            meta: {
+                title: '组织管理'
+            }
+        }, {
             path: '/system_player',
             component: system_player,
             meta: {
@@ -444,7 +452,7 @@ export default new Router({
         }]
     }, {
         path: '/login',
-        component: () => import(/* webpackChunkName: "login" */ '../components/page/Login.vue'),
+        component: login,
         meta: { 
             title: '用户登录' 
         }

@@ -21,10 +21,10 @@ export function httpRequest(opt) {
 			method: config.method,
 			data: config.data
 		}).then((res)=>{
-			// console.info("post-then", res)
+			console.info("post-then", res)
       		return Promise.resolve(res.data)
 		}).catch(function (error) {
-	      	// console.info("post-error", error)
+	      	console.info("post-error", error)
 	      	return Promise.resolve(error.data)
 	    });
 	} 

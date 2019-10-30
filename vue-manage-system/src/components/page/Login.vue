@@ -90,13 +90,16 @@
                 this.$router.replace({
                     path: '/'
                 })
-                /*
-                var self = this;
-                self.loginData.password = this.$md5(self.loginData.password);
-                httpRequest({
-                    url: "systemUser/login.json",
-                    method: 'GET',
-                    data: self.loginData
+               /*
+                let self = this;
+                let pwdString = this.$md5(self.loginData.password);
+                this.$http({
+                    url: "system/login",
+                    method: 'POST',
+                    data: {
+                        name: self.loginData.username,
+                        password: pwdString
+                    }
                 }).then((res) => {
                     if (res) {
                         this.$router.replace({
