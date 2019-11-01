@@ -7,32 +7,35 @@
 	<div class="list-content">
 		<div class="search-content">
 			<div class="search-input">
-				<el-input placeholder='请输入员工姓名查询' v-model="key" clearable>
-					<el-button slot="append" icon="el-icon-search"></el-button>
+				<el-input placeholder='请输入员工姓名查询' v-model="key" @keyup.enter.native="getUserList(1)" clearable>
+					<el-button slot="append" icon="el-icon-search" @click="getUserList(1)"></el-button>
 				</el-input>
 			</div>
 			<div class="search-btn">
-				<el-button class="new-btn" type="primary" @click="isNew=true">新增用户</el-button>
+				<el-button class="new-btn" type="primary" @click="showCreate">新增用户</el-button>
 			</div>
 		</div>
 		<div class="table-content">
 			<!-- @filter-change="filterHandler" -->
 			<el-table :data="tableData" border stripe @cell-dblclick="goToDetail">
-				<el-table-column align="center" prop="userId" label="ID" width="120px"></el-table-column>
+				<el-table-column align="center" prop="id" label="ID" width="120px"></el-table-column>
 				<el-table-column align="center" prop="realName" label="姓名" width="120px"></el-table-column>
-				<el-table-column align="center" prop="mobile" label="手机号"></el-table-column>
+				<el-table-column align="center" prop="phone" label="手机号"></el-table-column>
 				<el-table-column align="center" prop="userType" label="用户类型" width="120px"></el-table-column>
-				<el-table-column align="center" prop="companyName" label="归属公司"></el-table-column>
+				<el-table-column align="center" prop="organizationName" label="归属组织"></el-table-column>
 				<el-table-column align="center" prop="registTime" label="添加时间"></el-table-column>
 				<el-table-column align="center" label="操作" width="280px">
 					<template slot-scope="scope">
 						<el-button type="warning" samll @click="goToDetail(scope.row)">分配角色</el-button>
-						<el-button type="primary" samll @click="goToDetail(scope.row)">编辑</el-button>
-						<el-button type="danger" samll @click="goToDetail(scope.row)">删除</el-button>
+						<el-button type="primary" samll @click="showUpdate(scope.row)">编辑</el-button>
+						<el-button type="danger" samll @click="showDeleteUser(scope.row)">删除</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
-			<el-dialog title="新增用户" :visible.sync="isNew" center width="35%">
+			<div class="block">
+                <el-pagination background @current-change="handleCurrentChange" :current-page.sync="nowPage" :page-size="20" layout="prev, pager, next, jumper" :page-count="totalPage"></el-pagination>
+            </div>
+			<el-dialog :title="changeText" :visible.sync="isNew" center width="35%">
 				<el-form >
 					<el-form-item label="姓名" :label-width="formLabelWidth">
 						<el-input autocomplete="off"></el-input>
@@ -55,7 +58,7 @@
 				</el-form>
 				<div slot="footer" class="dialog-footer">
 					<el-button @click="isNew=false">取 消</el-button>
-					<el-button type="primary" @click="createNewUser">确 定</el-button>
+					<el-button type="primary" :loading="isLoading" @click="createNewUser">确 定</el-button>
 				</div>
 			</el-dialog>
 		</div>
@@ -70,6 +73,7 @@
 				key: '',
 				tableData: [],
 				nowPage: null,
+				totalPage: null,
 				searchDate: '',
 				formLabelWidth: '80px',
 				partnerTypeDic: Object.freeze([{
@@ -98,7 +102,10 @@
 					value: '7'
 				}]),
 				partnerType: '',
-				isNew: false
+				isNew: false,
+				changeText: '',
+				isUpdate: false,
+				isLoading: false
 			}
 		},
 		created() {
@@ -108,7 +115,15 @@
 
 		},
 		watch: {
-
+			'isNew': function(val) {
+				if (val == false) {
+					// this.ruleForm.partnerType = '';
+					// this.ruleForm.organizName = '';
+					// this.isLock = true;
+					this.changeText = '';
+					this.isUpdate = false;
+				}
+			}
 		},
 		methods: {
 			/**
@@ -121,27 +136,140 @@
 				self.nowPage = currentPage;
 				self.tableData = [];
 				let postData = {
-					num: 20,
-					page: currentPage,
-					key: self.key,
-					partnerType: self.partnerType
+					rows: 20,
+					page: currentPage
 				};
-				/*
 				this.$http({
-					url: 'listPartner.json',
-					method: 'GET',
+					url: 'system/list',
+					method: 'POST',
 					data: postData
 				}).then(res => {
-					self.tableData = res;
+					self.tableData = res.rows;
 				})
-				*/
-				self.tableData = userData.data;
+				// self.tableData = userData.data;
 			},
 			goToDetail(item) {
 				
 			},
+			/**
+			 * 显示新建
+			 * @return {Null} 
+			 */
+			showCreate() {
+				this.isNew = true;
+				this.changeText = '新增用户'; 
+			},
+			/**
+			 * 显示更新
+			 * @param  {Object} item 当前选中的用户信息
+			 * @return {Object}      返回信息
+			 */
+			showUpdate(item) {
+				this.isNew = true;
+				this.changeText = '更新用户信息';
+				this.isUpdate = true;
+				// this.ruleForm.partnerType = item.pid;
+				// this.ruleForm.organizName = item.name;
+			},
 			createNewUser() {
-
+				let self = this;
+				let url = '',
+					showStr = '';
+				if (this.isUpdate == true) {
+					url = `system/organization/update`;
+				} else {
+					url = `system/organization/add`;
+				}
+				self.isLoading = true;
+				this.$http({
+					url: url,
+					method: 'POST',
+					data: {
+						// name: self.ruleForm.organizName,
+						// pid: self.ruleForm.partnerType,
+						status: 1
+					}
+				}).then((res) => {
+					setTimeout(() => {
+						if (res.code >= 0) {
+							if (this.isUpdate == true) {
+								showStr = `更新成功`;
+							} else {
+								showStr = `新增成功`;
+							}
+							this.isLoading = false;
+							this.isNew = false;
+							this.$message.success(showStr);
+							this.getUserList(1);
+						} else {
+							self.$message({
+								showClose: true,
+								message: res.data.msg,
+								type: 'error'
+							});
+						}
+					}, 1500);
+				})
+			},
+			showDeleteUser(item) {
+				this.$confirm(`确认删除当前用户？`,`删除用户`, {
+                    confirmButtonText: '是',
+                    cancelButtonText: '否',
+                    type: 'warning',
+                    distinguishCancelAndClose: true,
+                    // center: true,
+                    beforeClose: (action, instance, done) => {
+                        if (action === 'confirm') {
+                            instance.confirmButtonLoading = true;
+                            instance.confirmButtonText = '执行中...';
+                            setTimeout(() => {
+                                done();
+                                setTimeout(() => {
+                                    this.deleteUser(item);
+                                    instance.confirmButtonLoading = false;
+                                }, 300);
+                            }, 3000);
+                        } else {
+                            done();
+                        }
+                    }
+                }).then(() => {
+                    
+                }).catch(action => {
+                    if (action === 'close'||action === 'cancel') {
+                        this.$message({
+                            type: 'info',
+                            message: `放弃操作`
+                        });
+                    }          
+                });
+			},
+			/**
+			 * 删除当前用户
+			 * @param  {Object} item 当前用户
+			 * @return {Null}      
+			 */
+			deleteUser(item) {
+				let self = this;
+				let postData = {
+					id: item.id
+				};
+				this.$http({
+					url: 'system/organization/delete',
+					method: 'POST',
+					data: postData
+				}).then((res) => {
+					if (res.code >= 0) {
+						this.$message.success(`删除成功`);
+						this.getUserList(1);
+					} else {
+						self.$message({
+							showClose: true,
+							message: res.data.msg,
+							type: 'error'
+						});
+					}
+				})
 			},
 			filterHandler(filters) {
 				let self = this;
@@ -156,6 +284,9 @@
 					self.partnerType = '';
 				}
 				self.getUserList(self.nowPage);
+			},
+			handleCurrentChange(val) {
+				getUserList(val);
 			}
 		},
 		filters: {

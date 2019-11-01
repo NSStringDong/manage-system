@@ -3,6 +3,7 @@ import axios from 'axios'
 import {Message} from 'element-ui'
 import router from '../router/index.js'
 
+let token = '';
 const httpSet = axios.create({
 	baseURL: axiosConfig.baseUrl,
 	timeout: axiosConfig.timeout
@@ -31,6 +32,12 @@ httpSet.defaults.validataStatus = function (status) {
 // 配置请求头信息
 httpSet.interceptors.request.use(
 	config => {
+		let localToken = window.localStorage.getItem('token');
+		// console.info("token", localToken);
+  		if (localToken) {
+    		token = localToken;
+  		}
+  		config.headers.common['token'] = token;
 		config.headers.Accept = 'application/json';
 		return config;
 	},
@@ -53,7 +60,7 @@ httpSet.interceptors.response.use(
 			} else if (data.code == -100) {
 				Message({
 					showClose: true,
-					message: data.msg,
+					message: data.message,
 					type: 'error'
 				});
 				router.replace({

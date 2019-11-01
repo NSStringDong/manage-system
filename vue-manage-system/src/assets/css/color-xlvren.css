@@ -26,3 +26,13 @@
 .collapse-btn:hover{
     background: #3f3f3f;
 }
+.el-pagination {
+    margin-top: 10px;
+    white-space: nowrap;
+    padding: 5px 0px !important;
+    color: #303133;
+    font-weight: 700;
+}
+.el-pagination.is-background .btn-prev {
+    margin-left: 0px !important;
+}

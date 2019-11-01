@@ -85,12 +85,13 @@
         },
         methods: {
             loginIn() {
+                /*
                 this.$message.success('登录成功');
                 localStorage.setItem('ms_username', '测试人员');
                 this.$router.replace({
                     path: '/'
                 })
-               /*
+                */
                 let self = this;
                 let pwdString = this.$md5(self.loginData.password);
                 this.$http({
@@ -101,13 +102,16 @@
                         password: pwdString
                     }
                 }).then((res) => {
+                    console.info('login', res);
                     if (res) {
+                        this.$message.success('登录成功');
+                        localStorage.setItem('token', res.token);
+                        localStorage.setItem('username', res.realName);
                         this.$router.replace({
                             path: '/dashboard'
                         })
                     }
                 })
-                */
             }
         }
     };

@@ -33,7 +33,8 @@ Object.keys(filters).forEach((item) => {
 router.beforeEach((to, from, next) => {
     console.log(to);
     document.title = `${to.meta.title}`;
-    if (to.path === '/login') {
+    const role = localStorage.getItem('token');
+    if (!role && to.path !== '/login') {
         next();
     } else {
         /*

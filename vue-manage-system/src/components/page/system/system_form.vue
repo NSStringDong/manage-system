@@ -18,12 +18,14 @@
 		<div class="table-content">
 			<!-- @filter-change="filterHandler" -->
 			<el-table :data="tableData" border stripe @cell-dblclick="goToDetail">
-				<el-table-column align="center" prop="userId" label="ID" width="120px"></el-table-column>
-				<el-table-column align="center" prop="realName" label="姓名" width="120px"></el-table-column>
-				<el-table-column align="center" prop="mobile" label="手机号"></el-table-column>
-				<el-table-column align="center" prop="userType" label="用户类型" width="120px"></el-table-column>
-				<el-table-column align="center" prop="companyName" label="归属公司"></el-table-column>
-				<el-table-column align="center" prop="registTime" label="添加时间"></el-table-column>
+				<el-table-column align="center" prop="id" label="ID"></el-table-column>
+				<el-table-column align="center" prop="name" label="部门名称"></el-table-column>
+				<el-table-column align="center" prop="status" label="状态"></el-table-column>
+				<el-table-column align="center" prop="createTime" label="添加时间">
+					<template slot-scope="scope">
+						<p>{{scope.row.createTime.substring(0, 10)}}</p>
+					</template>
+				</el-table-column>
 				<el-table-column align="center" label="操作" width="280px">
 					<template slot-scope="scope">
 						<el-button type="warning" samll @click="goToDetail(scope.row)">分配组织</el-button>
@@ -150,6 +152,7 @@
 				if (val == false) {
 					this.ruleForm.partnerType = '';
 					this.ruleForm.organizName = '';
+					this.changeText = '';
 					this.isLock = true;
 					this.isUpdate = false;
 				}
@@ -166,21 +169,18 @@
 				self.nowPage = currentPage;
 				self.tableData = [];
 				let postData = {
-					num: 20,
-					page: currentPage,
-					key: self.key,
-					pid: ``
+					rows: 20,
+					page: currentPage
 				};
-				/*
 				this.$http({
 					url: 'system/organization/list',
 					method: 'POST',
 					data: postData
 				}).then((res) => {
-					self.tableData = res;
+					console.info("res", res);
+					self.tableData = res.rows;
 				})
-				*/
-				self.tableData = userData.data;
+				// self.tableData = userData.data;
 			},
 			goToDetail(item) {
 				
@@ -245,7 +245,7 @@
 				})
 			},
 			showDeleteOrganization(item) {
-				this.$confirm(`确认删除当前组织？`,`删除组织`, {
+				this.$confirm(`确认删除${item.name}组织？`,`删除组织`, {
                     confirmButtonText: '是',
                     cancelButtonText: '否',
                     type: 'warning',

@@ -1,13 +1,15 @@
 let baseUrl = '/jweb_management/';
 if (process.env.NODE_ENV === 'development') {
-	baseUrl = 'http://http://192.168.11.64:8083/oms/';
+	baseUrl = 'http://192.168.11.64:8083/oms/';
 }
 
+/*
 if (window.domain === 'www.xlvren.com') {
 
 } else {
 	baseUrl = 'http://192.168.11.64:8083/oms/';
 }
+*/
 
 export let axiosConfig = {
 	timeout: 20000,

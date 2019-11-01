@@ -7,12 +7,12 @@
 	<div class="list-content">
 		<div class="search-content">
 			<div class="search-input">
-				<el-input placeholder='请输入员工姓名查询' v-model="key" clearable>
+				<el-input placeholder='请输入员工姓名查询' v-model="key" @keyup.enter.native="getPlayerList(1)" clearable>
 					<el-button slot="append" icon="el-icon-search"></el-button>
 				</el-input>
 			</div>
 			<div class="search-btn">
-				<el-button class="new-btn" type="primary" @click="isNew=true">新增角色</el-button>
+				<el-button class="new-btn" type="primary" @click="showCreate">新增角色</el-button>
 			</div>
 		</div>
 		<div class="table-content">
@@ -27,12 +27,15 @@
 				<el-table-column align="center" label="操作" width="280px">
 					<template slot-scope="scope">
 						<el-button type="warning" samll @click="goToDetail(scope.row)">分配菜单</el-button>
-						<el-button type="primary" samll @click="goToDetail(scope.row)">编辑</el-button>
-						<el-button type="danger" samll @click="goToDetail(scope.row)">删除</el-button>
+						<el-button type="primary" samll @click="showUpdate(scope.row)">编辑</el-button>
+						<el-button type="danger" samll @click="showDeletePlayer(scope.row)">删除</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
-			<el-dialog title="新增用户" :visible.sync="isNew" center width="35%">
+			<div class="block">
+                <el-pagination background @current-change="handleCurrentChange" :current-page.sync="nowPage" :page-size="20" layout="prev, pager, next, jumper" :page-count="totalPage"></el-pagination>
+            </div>
+			<el-dialog :title="changeText" :visible.sync="isNew" center width="35%">
 				<el-form >
 					<el-form-item label="姓名" :label-width="formLabelWidth">
 						<el-input autocomplete="off"></el-input>
@@ -55,7 +58,7 @@
 				</el-form>
 				<div slot="footer" class="dialog-footer">
 					<el-button @click="isNew=false">取 消</el-button>
-					<el-button type="primary" @click="createNewUser">确 定</el-button>
+					<el-button type="primary" :loading="isLoading" @click="createNewPlayer">确 定</el-button>
 				</div>
 			</el-dialog>
 		</div>
@@ -70,6 +73,7 @@
 				key: '',
 				tableData: [],
 				nowPage: null,
+				totalPage: null,
 				searchDate: '',
 				formLabelWidth: '80px',
 				partnerTypeDic: Object.freeze([{
@@ -98,17 +102,28 @@
 					value: '7'
 				}]),
 				partnerType: '',
-				isNew: false
+				isNew: false,
+				changeText: '',
+				isUpdate: false,
+				isLoading: false
 			}
 		},
 		created() {
-			this.getPartnerList(1);
+			this.getPlayerList(1);
 		},
 		mounted() {
 
 		},
 		watch: {
-
+			'isNew': function(val) {
+				if (val == false) {
+					// this.ruleForm.partnerType = '';
+					// this.ruleForm.organizName = '';
+					// this.isLock = true;
+					this.changeText = '';
+					this.isUpdate = false;
+				}
+			}
 		},
 		methods: {
 			/**
@@ -116,7 +131,7 @@
 			 * @param  {Number} currentPage 当前页数
 			 * @return {Array}             伙伴数组
 			 */
-			getPartnerList(currentPage) {
+			getPlayerList(currentPage) {
 				let self = this;
 				self.nowPage = currentPage;
 				self.tableData = [];
@@ -140,8 +155,125 @@
 			goToDetail(item) {
 				
 			},
-			createNewUser() {
-
+			/**
+			 * 显示新建
+			 * @return {Null} 
+			 */
+			showCreate() {
+				this.isNew = true;
+				this.changeText = '新增角色'; 
+			},
+			/**
+			 * 显示更新
+			 * @param  {Object} item 当前选中的角色信息
+			 * @return {Object}      返回信息
+			 */
+			showUpdate(item) {
+				this.isNew = true;
+				this.changeText = '更新角色信息';
+				this.isUpdate = true;
+				// this.ruleForm.partnerType = item.pid;
+				// this.ruleForm.organizName = item.name;
+			},
+			createNewPlayer() {
+				let self = this;
+				let url = '',
+					showStr = '';
+				if (this.isUpdate == true) {
+					url = `system/organization/update`;
+				} else {
+					url = `system/organization/add`;
+				}
+				self.isLoading = true;
+				this.$http({
+					url: url,
+					method: 'POST',
+					data: {
+						// name: self.ruleForm.organizName,
+						// pid: self.ruleForm.partnerType,
+						status: 1
+					}
+				}).then((res) => {
+					setTimeout(() => {
+						if (res.code >= 0) {
+							if (this.isUpdate == true) {
+								showStr = `更新成功`;
+							} else {
+								showStr = `新增成功`;
+							}
+							this.isLoading = false;
+							this.isNew = false;
+							this.$message.success(showStr);
+							this.getPlayerList(1);
+						} else {
+							self.$message({
+								showClose: true,
+								message: res.data.msg,
+								type: 'error'
+							});
+						}
+					}, 1500);
+				})
+			},
+			showDeletePlayer(item) {
+				this.$confirm(`确认删除当前角色？`,`删除角色`, {
+                    confirmButtonText: '是',
+                    cancelButtonText: '否',
+                    type: 'warning',
+                    distinguishCancelAndClose: true,
+                    // center: true,
+                    beforeClose: (action, instance, done) => {
+                        if (action === 'confirm') {
+                            instance.confirmButtonLoading = true;
+                            instance.confirmButtonText = '执行中...';
+                            setTimeout(() => {
+                                done();
+                                setTimeout(() => {
+                                    this.deletePlayer(item);
+                                    instance.confirmButtonLoading = false;
+                                }, 300);
+                            }, 3000);
+                        } else {
+                            done();
+                        }
+                    }
+                }).then(() => {
+                    
+                }).catch(action => {
+                    if (action === 'close'||action === 'cancel') {
+                        this.$message({
+                            type: 'info',
+                            message: `放弃操作`
+                        });
+                    }          
+                });
+			},
+			/**
+			 * 删除当前用户
+			 * @param  {Object} item 当前用户
+			 * @return {Null}      
+			 */
+			deletePlayer(item) {
+				let self = this;
+				let postData = {
+					id: item.id
+				};
+				this.$http({
+					url: 'system/organization/delete',
+					method: 'POST',
+					data: postData
+				}).then((res) => {
+					if (res.code >= 0) {
+						this.$message.success(`删除成功`);
+						this.getPlayerList(1);
+					} else {
+						self.$message({
+							showClose: true,
+							message: res.data.msg,
+							type: 'error'
+						});
+					}
+				})
 			},
 			filterHandler(filters) {
 				let self = this;
@@ -155,7 +287,10 @@
 				if (self.partnerType== null || self.partnerType == undefined) {
 					self.partnerType = '';
 				}
-				self.getPartnerList(self.nowPage);
+				self.getPlayerList(self.nowPage);
+			},
+			handleCurrentChange(val) {
+				this.getPlayerList(val);
 			}
 		},
 		filters: {
