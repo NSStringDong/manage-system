@@ -18,13 +18,15 @@
 		<div class="table-content">
 			<!-- @filter-change="filterHandler" -->
 			<el-table :data="tableData" border stripe @cell-dblclick="goToDetail">
-				<el-table-column align="center" prop="userId" label="ID" width="120px"></el-table-column>
-				<el-table-column align="center" prop="realName" label="姓名" width="120px"></el-table-column>
-				<el-table-column align="center" prop="mobile" label="手机号"></el-table-column>
-				<el-table-column align="center" prop="userType" label="用户类型" width="120px"></el-table-column>
-				<el-table-column align="center" prop="companyName" label="归属公司"></el-table-column>
-				<el-table-column align="center" prop="registTime" label="添加时间"></el-table-column>
-				<el-table-column align="center" label="操作" width="280px">
+				<el-table-column align="center" prop="id" label="ID"></el-table-column>
+				<el-table-column align="center" prop="name" label="角色名"></el-table-column>
+				<el-table-column align="center" prop="status" label="状态"></el-table-column>
+				<el-table-column align="center" prop="createTime" label="添加时间">
+					<template slot-scope="scope">
+						<p>{{scope.row.createTime | getNowTime}}</p>
+					</template>
+				</el-table-column>
+				<el-table-column align="center" label="操作">
 					<template slot-scope="scope">
 						<el-button type="warning" samll @click="goToDetail(scope.row)">分配菜单</el-button>
 						<el-button type="primary" samll @click="showUpdate(scope.row)">编辑</el-button>
@@ -66,6 +68,7 @@
 </template>
 <script type="text/javascript">
 	import {userData} from '../../../utils/data.js';
+	import {allTime} from '../../../utils/tools.js';
 	export default {
 		name: 'system_player',
 		data() {
@@ -136,21 +139,17 @@
 				self.nowPage = currentPage;
 				self.tableData = [];
 				let postData = {
-					num: 20,
-					page: currentPage,
-					key: self.key,
-					partnerType: self.partnerType
+					rows: 20,
+					page: currentPage
 				};
-				/*
 				this.$http({
-					url: 'listPartner.json',
-					method: 'GET',
+					url: 'system/role/list',
+					method: 'POST',
 					data: postData
-				}).then(res => {
-					self.tableData = res;
+				}).then((res) => {
+					self.tableData = res.rows;
+					self.totalPage = 20%res.total;
 				})
-				*/
-				self.tableData = userData.data;
 			},
 			goToDetail(item) {
 				
@@ -180,9 +179,9 @@
 				let url = '',
 					showStr = '';
 				if (this.isUpdate == true) {
-					url = `system/organization/update`;
+					url = `system/role/update`;
 				} else {
-					url = `system/organization/add`;
+					url = `system/role/add`;
 				}
 				self.isLoading = true;
 				this.$http({
@@ -216,7 +215,7 @@
 				})
 			},
 			showDeletePlayer(item) {
-				this.$confirm(`确认删除当前角色？`,`删除角色`, {
+				this.$confirm(`确认删除${item.name}角色？`,`删除角色`, {
                     confirmButtonText: '是',
                     cancelButtonText: '否',
                     type: 'warning',
@@ -259,7 +258,7 @@
 					id: item.id
 				};
 				this.$http({
-					url: 'system/organization/delete',
+					url: 'system/role/delete',
 					method: 'POST',
 					data: postData
 				}).then((res) => {
@@ -294,7 +293,9 @@
 			}
 		},
 		filters: {
-
+			getNowTime:function(val) {
+				return allTime(val).substring(0, 10);
+			}
 		}
 	}
 </script>

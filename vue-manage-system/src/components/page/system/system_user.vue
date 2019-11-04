@@ -145,6 +145,7 @@
 					data: postData
 				}).then(res => {
 					self.tableData = res.rows;
+					self.totalPage = 20%res.total;
 				})
 				// self.tableData = userData.data;
 			},
@@ -176,9 +177,9 @@
 				let url = '',
 					showStr = '';
 				if (this.isUpdate == true) {
-					url = `system/organization/update`;
+					url = `system/update`;
 				} else {
-					url = `system/organization/add`;
+					url = `system/add`;
 				}
 				self.isLoading = true;
 				this.$http({
@@ -212,7 +213,7 @@
 				})
 			},
 			showDeleteUser(item) {
-				this.$confirm(`确认删除当前用户？`,`删除用户`, {
+				this.$confirm(`确认删除${item.realName}用户？`,`删除用户`, {
                     confirmButtonText: '是',
                     cancelButtonText: '否',
                     type: 'warning',

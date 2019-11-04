@@ -148,6 +148,7 @@
 					data: postData
 				}).then(res => {
 					self.tableData = res;
+					self.totalPage = 20%res.total;
 				})
 				*/
 				self.tableData = userData.data;

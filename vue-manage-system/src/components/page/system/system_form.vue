@@ -179,6 +179,7 @@
 				}).then((res) => {
 					console.info("res", res);
 					self.tableData = res.rows;
+					self.totalPage = 20%res.total;
 				})
 				// self.tableData = userData.data;
 			},

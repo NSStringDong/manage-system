@@ -3,8 +3,8 @@
   "version": "4.1.0",
   "private": true,
   "scripts": {
-    "dev": "npm run serve",
-    "serve": "vue-cli-service serve",
+    "dev": "npm run serve --open",
+    "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build"
   },
   "dependencies": {
