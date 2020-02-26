@@ -33,6 +33,9 @@ const presale_order = r => require.ensure([], () => r(require('../components/pag
 const presale_reject = r => require.ensure([], () => r(require('../components/page/presale/presale_reject.vue')), 'presale_reject');
 const presale_transfer = r => require.ensure([], () => r(require('../components/page/presale/presale_transfer.vue')), 'presale_transfer');
 /***********************************售前管理END******************************/
+/***********************************拓展管理*********************************/
+const expand_customer = r => require.ensure([], () => r(require('../components/page/expand/expand_customerList.vue')), 'expand_customer');
+/***********************************拓展管理END******************************/
 /***********************************站点管理*********************************/
 const site_station = r => require.ensure([], () => r(require('../components/page/site/site_station.vue')), 'site_station');
 const site_device = r => require.ensure([], () => r(require('../components/page/site/site_device.vue')), 'site_device');
@@ -391,6 +394,12 @@ export default new Router({
             component: performance_analys,
             meta: {
                 title: '绩效分析'
+            }
+        }, {
+            path: '/expand_customer',
+            component: expand_customer,
+            meta:{
+                title:'客户管理'
             }
         }, {
             path: '/system_user',

@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "core-js": "^2.6.9",
+    "dingtalk-jsapi": "^2.9.10",
     "element-ui": "^2.11.0",
     "js-md5": "^0.7.3",
     "mavon-editor": "^2.6.17",

@@ -26,9 +26,8 @@
 						<p>{{scope.row.createTime.substring(0, 10)}}</p>
 					</template>
 				</el-table-column>
-				<el-table-column align="center" label="操作" width="280px">
+				<el-table-column align="center" label="操作">
 					<template slot-scope="scope">
-						<el-button type="warning" samll @click="goToDetail(scope.row)">分配组织</el-button>
 						<el-button type="primary" samll @click="showUpdate(scope.row)">编辑</el-button>
 						<el-button type="danger" samll @click="showDeleteOrganization(scope.row)">删除</el-button>
 					</template>

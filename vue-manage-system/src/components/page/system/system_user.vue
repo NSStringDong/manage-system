@@ -20,12 +20,15 @@
 			<el-table :data="tableData" border stripe @cell-dblclick="goToDetail">
 				<el-table-column align="center" prop="id" label="ID" width="120px"></el-table-column>
 				<el-table-column align="center" prop="realName" label="姓名" width="120px"></el-table-column>
+				<el-table-column align="center" prop="name" label="用户名"></el-table-column>
 				<el-table-column align="center" prop="phone" label="手机号"></el-table-column>
-				<el-table-column align="center" prop="userType" label="用户类型" width="120px"></el-table-column>
+				<el-table-column align="center" prop="email" label="邮箱"></el-table-column>
+				<el-table-column align="center" prop="status" label="用户状态" width="120px"></el-table-column>
 				<el-table-column align="center" prop="organizationName" label="归属组织"></el-table-column>
 				<el-table-column align="center" prop="registTime" label="添加时间"></el-table-column>
-				<el-table-column align="center" label="操作" width="280px">
+				<el-table-column align="center" label="操作" width="400px">
 					<template slot-scope="scope">
+						<el-button type="info" samll @click="goToDetail(scope.row)">分配组织</el-button>
 						<el-button type="warning" samll @click="goToDetail(scope.row)">分配角色</el-button>
 						<el-button type="primary" samll @click="showUpdate(scope.row)">编辑</el-button>
 						<el-button type="danger" samll @click="showDeleteUser(scope.row)">删除</el-button>
@@ -40,21 +43,18 @@
 					<el-form-item label="姓名" :label-width="formLabelWidth">
 						<el-input autocomplete="off"></el-input>
 					</el-form-item>
+					<el-form-item label="用户名" :label-width="formLabelWidth">
+						<el-input autocomplete="off"></el-input>
+					</el-form-item>
 					<el-form-item label="手机号" :label-width="formLabelWidth">
 						<el-input autocomplete="off"></el-input>
 					</el-form-item>
 					<el-form-item label="密码" :label-width="formLabelWidth">
 						<el-input autocomplete="off"></el-input>
 					</el-form-item>
-					<el-form-item label="用户类型" :label-width="formLabelWidth">
-						<el-select v-model="partnerType" placeholder="请选择">
-							<el-option v-for="item in partnerTypeDic" :key="item.value" :label="item.text" :value="item.value"></el-option>
-						</el-select>
-					</el-form-item>
-					<el-form-item label="归属" :label-width="formLabelWidth">
+					<el-form-item label="邮箱" :label-width="formLabelWidth">
 						<el-input autocomplete="off"></el-input>
 					</el-form-item>
-					
 				</el-form>
 				<div slot="footer" class="dialog-footer">
 					<el-button @click="isNew=false">取 消</el-button>
@@ -76,32 +76,6 @@
 				totalPage: null,
 				searchDate: '',
 				formLabelWidth: '80px',
-				partnerTypeDic: Object.freeze([{
-					text: '小绿人',
-					value: '0'
-				}, {
-					text: '电动汽车物业',
-					value: '1'
-				}, {
-					text: '安装商',
-					value: '2'
-				}, {
-					text: '4S店',
-					value: '3'
-				}, {
-					text: '车企',
-					value: '4'
-				}, {
-					text: '自行车物业',
-					value: '5'
-				}, {
-					text: '自行车站主',
-					value: '6'
-				}, {
-					text: '代理商',
-					value: '7'
-				}]),
-				partnerType: '',
 				isNew: false,
 				changeText: '',
 				isUpdate: false,
@@ -271,20 +245,6 @@
 						});
 					}
 				})
-			},
-			filterHandler(filters) {
-				let self = this;
-				let row = null;
-				let val = null;
-				for(const i in filters) {
-					row = i;
-					val = filters[i];
-				}
-				self.partnerType = val[0];
-				if (self.partnerType== null || self.partnerType == undefined) {
-					self.partnerType = '';
-				}
-				self.getUserList(self.nowPage);
 			},
 			handleCurrentChange(val) {
 				getUserList(val);

@@ -39,7 +39,7 @@ export default {
 				icon: 'el-icon-s-platform',
 				index: 'dashboard',
 				title: '系统首页'
-			}, {
+			}, /*{
 				icon: 'el-icon-s-cooperation',
 				index: 'operation',
 				title: '运营管理',
@@ -100,9 +100,17 @@ export default {
 					index: 'presale_transfer',
 					title: '迁移管理'
 				}]
-			}, {
-				icon: 'el-icon-location',
+			}, */{
+				icon: 'el-icon-s-custom',
 				index: 'site',
+				title: '拓展管理',
+				subs: [{
+					index: 'expand_customer',
+					title: '客户管理'
+				}]
+			}, /*{
+				icon: 'el-icon-location',
+				index: 'expand',
 				title: '站点管理',
 				subs: [{
 					index: 'site_station',
@@ -221,7 +229,7 @@ export default {
 					index: 'performance_analys',
 					title: '绩效分析'
 				}]
-			}, {
+			}, */{
 				icon: 'el-icon-s-tools',
 				index: 'system',
 				title: '系统管理',

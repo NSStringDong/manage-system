@@ -8,10 +8,11 @@ import './assets/css/theme-green/index.css'; // 浅绿色主题
 // import './assets/css/theme/index.css'; // 小绿人主题色
 import './assets/css/icon.css';
 import 'babel-polyfill';
-import * as filters from './fliters/index.js'
-import md5 from 'js-md5'
+import * as filters from './fliters/index.js';
+import * as dd from 'dingtalk-jsapi'
+import md5 from 'js-md5';
 // import {httpRequest} from './assets/js/httpRequest.js'
-import {httpRequest} from './utils/httpRequest.js'
+import {httpRequest} from './utils/httpRequest.js';
 
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
@@ -74,5 +75,40 @@ router.beforeEach((to, from, next) => {
 
 new Vue({
     router,
-    render: h => h(App)
+    render: h => h(App),
+    created() {
+        // this.initDD();
+    },
+    methods: {
+        initDD: function() {
+            alert(`响应`);
+            let self = this;
+            alert(`requestAuthCode begin：ding74d9e13970803121a39a90f97fcb1e09`);
+            dd.ready(function() {
+                dd.runtime.permission.requestAuthCode({
+                    corpId: 'ding74d9e13970803121a39a90f97fcb1e09',
+                    onSuccess: function(result) {
+                        alert(`requestAuthCode:${result.code}`);
+                        self.dingTalkLogin(result.code);
+                    },
+                    onFail: function(err) {
+                        alert(`鉴权接口失败`);
+                    }
+                })
+            })
+        },
+        dingTalkLogin: function(authCode) {
+            let self = this;
+            let postData = {
+                requestAuthCode: authCode
+            };
+            self.$http({
+                url: 'auth/loginDingTalk',
+                method: 'POST',
+                data: postData
+            }).then(res => {
+                alert(res);
+            })
+        }
+    }
 }).$mount('#app');
