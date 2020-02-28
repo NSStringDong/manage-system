@@ -35,6 +35,7 @@ const presale_transfer = r => require.ensure([], () => r(require('../components/
 /***********************************售前管理END******************************/
 /***********************************拓展管理*********************************/
 const expand_customer = r => require.ensure([], () => r(require('../components/page/expand/expand_customerList.vue')), 'expand_customer');
+const expand_customerDetail = r => require.ensure([], () => r(require('../components/page/expand/expand_customerDetail.vue')), 'expand_customerDetail');
 /***********************************拓展管理END******************************/
 /***********************************站点管理*********************************/
 const site_station = r => require.ensure([], () => r(require('../components/page/site/site_station.vue')), 'site_station');
@@ -400,6 +401,12 @@ export default new Router({
             component: expand_customer,
             meta:{
                 title:'客户管理'
+            }
+        }, {
+            path: '/expand_customerDetail',
+            component: expand_customerDetail,
+            meta:{
+                title:'客户详情'
             }
         }, {
             path: '/system_user',

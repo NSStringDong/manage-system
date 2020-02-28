@@ -60,7 +60,7 @@
 							</el-table-column>
 							<el-table-column align="center" label="操作" >
 								<template slot-scope="scope">
-									<el-button type="success" plain>详情</el-button>
+									<el-button type="success" plain @click="goToDetail(scope.row)">详情</el-button>
 									<el-button type="primary" samll>编辑</el-button>
 									<el-button type="danger" samll>删除</el-button>
 								</template>
@@ -155,9 +155,9 @@
 			},
 			goToDetail(item) {
 				this.$router.push({
-					path: '/base_cooperation_detail',
+					path: '/expand_customerDetail',
 					query: {
-						partnerId: item.partnerId
+						// partnerId: item.partnerId
 					}
 				})
 			},

@@ -252,3 +252,7 @@ a {
 .table-content {
     margin-top: 25px;
 }
+.el-border {
+    border: 1px solid #e9eaec;
+    padding: 0px !important;
+}
