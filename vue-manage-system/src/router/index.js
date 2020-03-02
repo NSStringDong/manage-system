@@ -36,6 +36,8 @@ const presale_transfer = r => require.ensure([], () => r(require('../components/
 /***********************************拓展管理*********************************/
 const expand_customer = r => require.ensure([], () => r(require('../components/page/expand/expand_customerList.vue')), 'expand_customer');
 const expand_customerDetail = r => require.ensure([], () => r(require('../components/page/expand/expand_customerDetail.vue')), 'expand_customerDetail');
+const expand_data = r => require.ensure([], () => r(require('../components/page/expand/expand_data.vue')), 'expand_data');
+const expand_dataDetail = r => require.ensure([], () => r(require('../components/page/expand/expand_dataDetail.vue')), 'expand_dataDetail');
 /***********************************拓展管理END******************************/
 /***********************************站点管理*********************************/
 const site_station = r => require.ensure([], () => r(require('../components/page/site/site_station.vue')), 'site_station');
@@ -407,6 +409,18 @@ export default new Router({
             component: expand_customerDetail,
             meta:{
                 title:'客户详情'
+            }
+        }, {
+            path: '/expand_data',
+            component: expand_data,
+            meta: {
+                title: `数据中心`
+            }
+        }, {
+            path: '/expand_dataDetail',
+            component: expand_dataDetail,
+            meta: {
+                title: `拓展业务详情`
             }
         }, {
             path: '/system_user',
