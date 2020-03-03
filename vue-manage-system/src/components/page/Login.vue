@@ -95,18 +95,18 @@
                 let self = this;
                 let pwdString = this.$md5(self.loginData.password);
                 this.$http({
-                    url: "system/login",
+                    url: "auth/loginWithoutCode",
                     method: 'POST',
                     data: {
-                        name: self.loginData.username,
-                        password: pwdString
+                        username: self.loginData.username,
+                        password: self.loginData.password
                     }
                 }).then((res) => {
                     console.info('login', res);
                     if (res) {
                         this.$message.success('登录成功');
                         localStorage.setItem('token', res.token);
-                        localStorage.setItem('username', res.realName);
+                        localStorage.setItem('username', res.user.username);
                         this.$router.replace({
                             path: '/dashboard'
                         })

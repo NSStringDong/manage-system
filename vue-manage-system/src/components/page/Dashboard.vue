@@ -193,6 +193,7 @@
             }
         },
         created(){
+            this.getUserInfo();
             this.handleListener();
             this.changeDate();
         },
@@ -204,6 +205,18 @@
             bus.$off('collapse', this.handleBus);
         },
         methods: {
+            getUserInfo() {
+                this.$http({
+                    url: "auth/info",
+                    method: 'GET',
+                    data: ''
+                }).then((res) => {
+                    console.info('userInfo', res);
+                    if (res) {
+                        
+                    }
+                })
+            },
             changeDate(){
                 const now = new Date().getTime();
                 this.data.forEach((item, index) => {

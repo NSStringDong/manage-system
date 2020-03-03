@@ -170,6 +170,7 @@
 	</div>
 </template>
 <script>
+	import '../../../assets/css/content.css';
 	export default {
 		name: 'partnerDetail',
 		data() {

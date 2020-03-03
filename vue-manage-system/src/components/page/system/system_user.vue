@@ -83,7 +83,7 @@
 			}
 		},
 		created() {
-			this.getUserList(1);
+			this.getUserList(0);
 		},
 		mounted() {
 
@@ -114,14 +114,14 @@
 					page: currentPage
 				};
 				this.$http({
-					url: 'system/list',
-					method: 'POST',
+					url: 'api/users',
+					method: 'GET',
 					data: postData
 				}).then(res => {
-					self.tableData = res.rows;
-					self.totalPage = 20%res.total;
+					console.info("userList", res);
+					self.tableData = res.content;
+					self.totalPage = /*res.totalElements % 20;*/Math.ceil(res.totalElements / 20);
 				})
-				// self.tableData = userData.data;
 			},
 			goToDetail(item) {
 				
@@ -247,7 +247,7 @@
 				})
 			},
 			handleCurrentChange(val) {
-				getUserList(val);
+				this.getUserList(val);
 			}
 		},
 		filters: {

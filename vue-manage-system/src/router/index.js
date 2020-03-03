@@ -432,7 +432,7 @@ export default new Router({
             path: '/system_form',
             component: system_form,
             meta: {
-                title: '组织管理'
+                title: '部门管理'
             }
         }, {
             path: '/system_player',

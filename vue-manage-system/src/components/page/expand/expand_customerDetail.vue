@@ -447,6 +447,7 @@
 </template>
 <script type="text/javascript">
 	import {requestData} from '../../../utils/data.js';
+	import '../../../assets/css/content.css';
 	export default {
 		name: 'base_cooperation',
 		data() {

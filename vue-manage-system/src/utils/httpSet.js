@@ -36,8 +36,11 @@ httpSet.interceptors.request.use(
 		// console.info("token", localToken);
   		if (localToken) {
     		token = localToken;
+    		config.headers.Authorization = `Bearer ${token}`;
   		}
-  		config.headers.common['token'] = token;
+  		// config.headers.common['token'] = token;
+  		// config.headers.Authorization = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU4MTE2OTg2MSwiaWF0IjoxNTgxMTQ4MjYxfQ.8aAQgZt9q0As2mtAaoQbHcHodPXcOYXtb3oEJ16AcHNpxFAEoOKAURwJ2BI6RclNmLvcIkmmZL8KgN48JBqkxw";
+  		
 		config.headers.Accept = 'application/json';
 		return config;
 	},
@@ -55,6 +58,8 @@ httpSet.interceptors.response.use(
 		// 根据返回的数据做对应的处理
 		if (response.status == 200) {
 			const data = response.data;
+			return data;
+			/*
 			if (data.code >= 0) {
 				return data;
 			} else if (data.code == -100) {
@@ -74,6 +79,7 @@ httpSet.interceptors.response.use(
 				});
 				return data;
 			}
+			*/
 		} else {
 			// console.info(`请求返回：${JSON.stringify(response)}`);
 			const err = new Error();
