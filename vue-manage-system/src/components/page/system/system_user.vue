@@ -19,13 +19,16 @@
 			<!-- @filter-change="filterHandler" -->
 			<el-table :data="tableData" border stripe @cell-dblclick="goToDetail">
 				<el-table-column align="center" prop="id" label="ID" width="120px"></el-table-column>
-				<el-table-column align="center" prop="realName" label="姓名" width="120px"></el-table-column>
-				<el-table-column align="center" prop="name" label="用户名"></el-table-column>
+				<el-table-column align="center" prop="username" label="姓名" width="120px"></el-table-column>
 				<el-table-column align="center" prop="phone" label="手机号"></el-table-column>
 				<el-table-column align="center" prop="email" label="邮箱"></el-table-column>
 				<el-table-column align="center" prop="status" label="用户状态" width="120px"></el-table-column>
-				<el-table-column align="center" prop="organizationName" label="归属组织"></el-table-column>
-				<el-table-column align="center" prop="registTime" label="添加时间"></el-table-column>
+				<el-table-column align="center" prop="dept.name" label="归属组织"></el-table-column>
+				<el-table-column align="center" prop="createTime" label="添加时间">
+					<template slot-scope="scope">
+						<p>{{scope.row.createTime | timeCovert}}</p>
+					</template>
+				</el-table-column>
 				<el-table-column align="center" label="操作" width="400px">
 					<template slot-scope="scope">
 						<el-button type="info" samll @click="goToDetail(scope.row)">分配组织</el-button>
@@ -66,6 +69,7 @@
 </template>
 <script type="text/javascript">
 	import {userData} from '../../../utils/data.js';
+	// import {timeCovert} from '../../../utils/tools.js';
 	export default {
 		name: 'system_user',
 		data() {
@@ -187,7 +191,7 @@
 				})
 			},
 			showDeleteUser(item) {
-				this.$confirm(`确认删除${item.realName}用户？`,`删除用户`, {
+				this.$confirm(`确认删除${item.username}用户？`,`删除用户`, {
                     confirmButtonText: '是',
                     cancelButtonText: '否',
                     type: 'warning',
@@ -230,9 +234,9 @@
 					id: item.id
 				};
 				this.$http({
-					url: 'system/organization/delete',
-					method: 'POST',
-					data: postData
+					url: `api/users/${item.id}`,
+					method: 'DELETE',
+					data: ""
 				}).then((res) => {
 					if (res.code >= 0) {
 						this.$message.success(`删除成功`);
@@ -251,7 +255,7 @@
 			}
 		},
 		filters: {
-
+			
 		}
 	}
 </script>

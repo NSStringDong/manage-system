@@ -3,6 +3,7 @@ import {Message} from 'element-ui'
 
 export function httpRequest(opt) {
 	let config = Object.assign({}, {}, opt);
+	/*
 	if (opt.method == 'GET') {
 		return httpSet({
 			url: config.url,
@@ -15,7 +16,7 @@ export function httpRequest(opt) {
 	      	// console.info("get-error:"+JSON.stringify(error));
 	      	return Promise.resolve(error.data);
 	    });
-	} else {
+	} else if (opt.method == 'POST') {
 		return httpSet({
 			url: config.url,
 			method: config.method,
@@ -27,7 +28,19 @@ export function httpRequest(opt) {
 	      	console.info("post-error", error)
 	      	return Promise.resolve(error.data)
 	    });
-	} 
+	}
+	*/ 
+	return httpSet({
+		url: config.url,
+		method: config.method,
+		params: config.data
+	}).then((res)=>{
+		console.info("response-then", res);
+  		return Promise.resolve(res);
+	}).catch(function (error) {
+      	// console.info("get-error:"+JSON.stringify(error));
+      	return Promise.resolve(error.data);
+    });
 }
 /*
 export const getPersonInfo = data => {
