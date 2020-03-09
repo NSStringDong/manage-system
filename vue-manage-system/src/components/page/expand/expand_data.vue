@@ -119,6 +119,10 @@
 		height: 40px;
 		font-size: 40px;
 	}
+	.search-ul li {
+		display: inline-block;
+		padding-right: 10px;
+	}
 </style>
 <template>
 	<div class="list-content">
@@ -134,24 +138,38 @@
 			<el-tabs v-model="message" @tab-click="tabPress">
 				<el-tab-pane label="拓展任务管理" name="0">
 					<div class="search-content">
-						<el-select v-model="value" placeholder="请选择战区">
-							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-						</el-select>
-						<el-select v-model="value" placeholder="请选择城市群">
-							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-						</el-select>
-						<el-select v-model="value" placeholder="请选择子城市">
-							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-						</el-select>
-						<el-select v-model="value" placeholder="请选择区县">
-							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-						</el-select>
-						<el-select v-model="value" placeholder="请选择街道">
-							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-						</el-select>
-						<el-select v-model="value" placeholder="请选择社区">
-							<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-						</el-select>
+						<ul class="search-ul">
+							<li>
+								<el-select v-model="value" placeholder="请选择战区">
+									<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+								</el-select>
+							</li>
+							<li>
+								<el-select v-model="value" placeholder="请选择城市群">
+									<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+								</el-select>
+							</li>
+							<li>
+								<el-select v-model="value" placeholder="请选择子城市">
+									<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+								</el-select>
+							</li>
+							<li>
+								<el-select v-model="value" placeholder="请选择区县">
+									<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+								</el-select>
+							</li>
+							<li>
+								<el-select v-model="value" placeholder="请选择街道">
+									<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+								</el-select>
+							</li>
+							<li>
+								<el-select v-model="value" placeholder="请选择社区">
+									<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+								</el-select>
+							</li>
+						</ul>
 					</div>
 					<div class="search-content">
 						<div class="search-input">
@@ -193,40 +211,7 @@
 					</div>
 				</el-tab-pane>
 				<el-tab-pane label="拓展区域管理" name="1">
-					<el-main style="border: 1px solid #e9eaec;">
-						<el-timeline>
-							<el-timeline-item timestamp="2018/4/12" placement="top">
-								<el-card shadow="hover">
-									<div class="card-user-info" style="margin-left: 0px;">
-										<ul class="content-ul">
-											<li><h4>更新 Github 模板</h4></li>
-											<li><p>王小虎 提交于 2018/4/3 20:46</p></li>
-										</ul>
-									</div>
-								</el-card>
-							</el-timeline-item>
-							<el-timeline-item timestamp="2018/4/3" placement="top">
-								<el-card shadow="hover">
-									<div class="card-user-info" style="margin-left: 0px;">
-										<ul class="content-ul">
-											<li><h4>更新 Github 模板</h4></li>
-											<li><p>王小虎 提交于 2018/4/3 20:46</p></li>
-										</ul>
-									</div>
-								</el-card>
-							</el-timeline-item>
-							<el-timeline-item timestamp="2018/4/2" placement="top">
-								<el-card shadow="hover">
-									<div class="card-user-info" style="margin-left: 0px;">
-										<ul class="content-ul">
-											<li><h4>更新 Github 模板</h4></li>
-											<li><p>王小虎 提交于 2018/4/3 20:46</p></li>
-										</ul>
-									</div>
-								</el-card>
-							</el-timeline-item>
-						</el-timeline>
-					</el-main>
+					
 				</el-tab-pane>
 			</el-tabs>
 		</div>

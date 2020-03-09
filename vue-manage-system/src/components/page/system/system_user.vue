@@ -11,9 +11,9 @@
 					<el-button slot="append" icon="el-icon-search" @click="getUserList(1)"></el-button>
 				</el-input>
 			</div>
-			<div class="search-btn">
+			<!-- <div class="search-btn">
 				<el-button class="new-btn" type="primary" @click="showCreate">新增用户</el-button>
-			</div>
+			</div> -->
 		</div>
 		<div class="table-content">
 			<!-- @filter-change="filterHandler" -->
@@ -29,14 +29,14 @@
 						<p>{{scope.row.createTime | timeCovert}}</p>
 					</template>
 				</el-table-column>
-				<el-table-column align="center" label="操作" width="400px">
+				<!-- <el-table-column align="center" label="操作" width="400px">
 					<template slot-scope="scope">
 						<el-button type="info" samll @click="goToDetail(scope.row)">分配组织</el-button>
 						<el-button type="warning" samll @click="goToDetail(scope.row)">分配角色</el-button>
 						<el-button type="primary" samll @click="showUpdate(scope.row)">编辑</el-button>
 						<el-button type="danger" samll @click="showDeleteUser(scope.row)">删除</el-button>
 					</template>
-				</el-table-column>
+				</el-table-column> -->
 			</el-table>
 			<div class="block">
                 <el-pagination background @current-change="handleCurrentChange" :current-page.sync="nowPage" :page-size="20" layout="prev, pager, next, jumper" :page-count="totalPage"></el-pagination>

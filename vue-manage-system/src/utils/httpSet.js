@@ -100,6 +100,9 @@ httpSet.interceptors.response.use(
                     break
                 case 401:
                     error.message = '未授权，请登录'
+                    router.replace({
+						path: '/login'
+					});
                     break
                 case 403:
                     error.message = '跨域拒绝访问'

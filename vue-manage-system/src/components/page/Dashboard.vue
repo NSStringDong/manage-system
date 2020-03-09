@@ -215,6 +215,8 @@
                     if (res) {
                         
                     }
+                }).catch((error) => {
+                    console.info("userInfo-Error", error);
                 })
             },
             changeDate(){
