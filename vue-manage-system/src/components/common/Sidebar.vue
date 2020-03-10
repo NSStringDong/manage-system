@@ -245,9 +245,6 @@ export default {
 				}, {
 					index: 'system_player',
 					title: '角色管理'
-				}, {
-					index: 'system_right',
-					title: '权限管理'
 				}]
 			}, {
 				icon: 'el-icon-lx-warn',

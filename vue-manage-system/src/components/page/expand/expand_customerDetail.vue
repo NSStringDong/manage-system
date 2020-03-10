@@ -449,7 +449,7 @@
 	import {requestData} from '../../../utils/data.js';
 	import '../../../assets/css/content.css';
 	export default {
-		name: 'base_cooperation',
+		name: 'expand_customerDetail',
 		data() {
 			return {
 				message: 0,

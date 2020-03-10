@@ -172,7 +172,7 @@
 <script>
 	import '../../../assets/css/content.css';
 	export default {
-		name: 'partnerDetail',
+		name: 'expand_dataDetail',
 		data() {
 			return {
 				message: 0,

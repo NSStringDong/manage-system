@@ -211,7 +211,83 @@
 					</div>
 				</el-tab-pane>
 				<el-tab-pane label="拓展区域管理" name="1">
-					
+					<!-- <div class="search-content">
+						<ul class="search-ul">
+							<li>
+								<el-select v-model="value" placeholder="请选择战区">
+									<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+								</el-select>
+							</li>
+							<li>
+								<el-select v-model="value" placeholder="请选择城市群">
+									<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+								</el-select>
+							</li>
+							<li>
+								<el-select v-model="value" placeholder="请选择子城市">
+									<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+								</el-select>
+							</li>
+							<li>
+								<el-select v-model="value" placeholder="请选择区域">
+									<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+								</el-select>
+							</li>
+						</ul>
+					</div> -->
+					<el-main class="el-border" style="margin-top: 20px;">
+						<div class="el-main_title">区域管理</div>
+						<div class="el-main_content">
+							<ul class="content-ul">
+								<li>
+									<span>战区：</span>
+									<p>
+										<el-select v-model="value" placeholder="请选择战区">
+											<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+										</el-select>
+									</p>
+								</li>
+								<li>
+									<span>城市群：</span>
+									<p>
+										<el-select v-model="value" placeholder="请选择城市群">
+											<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+										</el-select>
+									</p>
+								</li>
+								<li>
+									<span>子城市：</span>
+									<p>
+										<el-select v-model="value" placeholder="请选择子城市">
+											<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+										</el-select>
+									</p>
+								</li>
+								<li>
+									<span>城市区域：</span>
+									<p>
+										<el-select v-model="value" placeholder="请选择区域">
+											<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+										</el-select>
+									</p>
+								</li>
+								<li>
+									<span>责任BD：</span>
+									<p>
+										<el-select v-model="value1" multiple placeholder="请选择BD">
+											<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+										</el-select>
+									</p>
+								</li>
+								<li>
+									<span>主攻方向：</span>
+									<p>
+										<el-transfer v-model="pushValue" :titles="['方向列表', '已选中']" :button-texts="['到左边', '到右边']" :data="pushData"></el-transfer>
+									</p>
+								</li>
+							</ul>
+						</div>
+					</el-main>
 				</el-tab-pane>
 			</el-tabs>
 		</div>
@@ -234,10 +310,11 @@
 </template>
 <script type="text/javascript">
 	import {requestData} from '../../../utils/data.js';
+	import '../../../assets/css/content.css';
 	import axios from 'axios';
 	let fileDownload = require('js-file-download');
 	export default {
-		name: 'base_cooperation',
+		name: 'expand_data',
 		data() {
 			return {
 				message: 0,
@@ -291,7 +368,25 @@
 					value: '选项5',
 					label: '北京烤鸭'
 				}],
-				value: ''
+				value: '',
+				value1: [],
+				pushData: [{
+					key: 1,
+					label: '黄金糕'
+				}, {
+					key: 2,
+					label: '双皮奶'
+				}, {
+					key: 3,
+					label: '蚵仔煎'
+				}, {
+					key: 4,
+					label: '龙须面'
+				}, {
+					key: 5,
+					label: '北京烤鸭'
+				}],
+				pushValue: []
 			}
 		},
 		created() {

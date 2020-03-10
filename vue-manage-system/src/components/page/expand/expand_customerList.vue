@@ -81,7 +81,7 @@
 <script type="text/javascript">
 	import {requestData} from '../../../utils/data.js';
 	export default {
-		name: 'base_cooperation',
+		name: 'expand_customer',
 		data() {
 			return {
 				message: 0,
