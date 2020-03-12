@@ -62,7 +62,7 @@
 							<ul class="content-ul">
 								<li>
 									<span>客户名称：</span>
-									<p>张三丰</p>
+									<p>{{customerInfo.clientName}}</p>
 								</li>
 								<li>
 									<span>客户星级：</span>
@@ -452,6 +452,8 @@
 		name: 'expand_customerDetail',
 		data() {
 			return {
+				customerId: this.$route.query.customerId,
+				customerInfo: Object,
 				message: 0,
 				key: '',
 				tableData: [],
@@ -491,7 +493,7 @@
 			}
 		},
 		created() {
-			this.getPartnerList(1);
+			this.getCustomerDetail();
 		},
 		mounted() {
 
@@ -505,6 +507,19 @@
 			}
 		},
 		methods: {
+			getCustomerDetail() {
+				let self = this;
+				let postData = {
+					id: self.customerId
+				};
+				self.$http({
+					url: 'clue/client/find',
+					method: 'GET',
+					data: postData
+				}).then(res => {
+					self.customerInfo = res;
+				})
+			},
 			/**
 			 * 获取合作伙伴列表
 			 * @param  {Number} currentPage 当前页数

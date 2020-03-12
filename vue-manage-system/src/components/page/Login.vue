@@ -37,6 +37,7 @@
 </template>
 
 <script type="text/javascript">
+    import {menuData} from '../../utils/mockData.js';
     export default {
         name: 'login',
         data: function(){
@@ -107,11 +108,24 @@
                         this.$message.success('登录成功');
                         localStorage.setItem('token', res.token);
                         localStorage.setItem('username', res.user.username);
+                        self.getUserMenus();
                         this.$router.replace({
                             path: '/dashboard'
                         })
                     }
                 })
+            },
+            getUserMenus() {
+                // this.$store.dispath('setMenuArray', menuData);
+                localStorage.setItem('menu', JSON.stringify(menuData));
+                // bus.$emit('menu', menuData);
+                // this.$http({
+                //     url: 'api/menus',
+                //     method: 'GET',
+                //     data: ""
+                // }).then(res => {
+                    
+                // })
             }
         }
     };

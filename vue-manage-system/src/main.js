@@ -1,6 +1,8 @@
 import Vue from 'vue';
+// import Vuex from 'vuex';
 import App from './App.vue';
 import router from './router';
+import store from './store';
 import ElementUI from 'element-ui';
 import {Message,Loading} from 'element-ui';
 // import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
@@ -13,10 +15,12 @@ import * as dd from 'dingtalk-jsapi'
 import md5 from 'js-md5';
 // import {httpRequest} from './assets/js/httpRequest.js'
 import {httpRequest} from './utils/httpRequest.js';
+import {createMenu} from './utils/permission.js';
 
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
 
+// Vue.use(Vuex);
 Vue.use(ElementUI, {
     size: 'small'
 });
@@ -24,6 +28,7 @@ Vue.prototype.$http = httpRequest;
 Vue.prototype.$message = Message;
 Vue.prototype.$loading = Loading;
 Vue.prototype.$md5 = md5;
+// Vue.prototype.$store = store;
 
 // 遍历filters，绑定到全局
 Object.keys(filters).forEach((item) => {
@@ -35,6 +40,16 @@ router.beforeEach((to, from, next) => {
     console.log(to);
     document.title = `${to.meta.title}`;
     const role = localStorage.getItem('token');
+    // 目标路由为登录页，直接进入
+    if (to.path === '/login') {
+        next();
+    }
+
+    if (from.path === '/login' && role) {
+        let menu = localStorage.getItem('menu');
+        let child = createMenu(menu);
+        console.info('menu', child);
+    }
     if (!role && to.path !== '/login') {
         next('/login');
     } else if (to.meta.permission) {
@@ -66,6 +81,7 @@ router.beforeEach((to, from, next) => {
 
 new Vue({
     router,
+    store,
     render: h => h(App),
     created() {
         // this.initDD();

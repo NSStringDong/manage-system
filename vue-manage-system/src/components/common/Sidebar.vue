@@ -102,7 +102,7 @@ export default {
 				}]
 			}, */{
 				icon: 'el-icon-s-custom',
-				index: 'site',
+				index: 'expand',
 				title: '拓展管理',
 				subs: [{
 					index: 'expand_customer',
@@ -113,7 +113,7 @@ export default {
 				}]
 			}, /*{
 				icon: 'el-icon-location',
-				index: 'expand',
+				index: 'site',
 				title: '站点管理',
 				subs: [{
 					index: 'site_station',
@@ -280,6 +280,9 @@ export default {
 		bus.$on('collapse', msg => {
 			this.collapse = msg;
 			bus.$emit('collapse-content', msg);
+		});
+		bus.$on('menu', function(value) {
+			console.info('menu',value);
 		});
 	}
 };

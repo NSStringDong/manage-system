@@ -46,18 +46,15 @@
 					</div>
 					<div class="table-content">
 						<el-table :data="tableData" border stripe @cell-dblclick="goToDetail" @filter-change="filterHandler">
-							<el-table-column align="center" prop="partnerId" label="ID"></el-table-column>
-							<el-table-column align="center" prop="partnerName" label="名称"></el-table-column>
-							<el-table-column align="center" prop="partnerType" label="类型" column-key="partnerType" :filters="this.partnerTypeDic" :filter-multiple="false">
+							<el-table-column align="center" prop="clientName" label="客户名称"></el-table-column>
+							<!-- <el-table-column align="center" prop="clientTypeCode" label="客户类型" column-key="clientTypeCode" :filters="this.partnerTypeDic" :filter-multiple="false">
 								<template slot-scope="scope">
 									<p>{{scope.row.partnerType | getPartnerType}}</p>
 								</template>
-							</el-table-column>
-							<el-table-column align="center" label="结算方式" >
-								<template slot-scope="scope">
-									<p>{{scope.row.settlementType | getProrationType}}</p>
-								</template>
-							</el-table-column>
+							</el-table-column> -->
+							<el-table-column align="center" prop="clientTypeCode" label="客户类型"></el-table-column>
+							<el-table-column align="center" prop="clueStatusCode" label="客户状态"></el-table-column>
+							<el-table-column align="center" prop="estimateDeviceNumber" label="预估设备数"></el-table-column>
 							<el-table-column align="center" label="操作" >
 								<template slot-scope="scope">
 									<el-button type="success" plain @click="goToDetail(scope.row)">详情</el-button>
@@ -118,7 +115,7 @@
 			}
 		},
 		created() {
-			this.getPartnerList(1);
+			this.getCustomerList(1);
 		},
 		mounted() {
 
@@ -132,7 +129,7 @@
 			 * @param  {Number} currentPage 当前页数
 			 * @return {Array}             伙伴数组
 			 */
-			getPartnerList(currentPage) {
+			getCustomerList(currentPage) {
 				let self = this;
 				self.nowPage = currentPage;
 				self.tableData = [];
@@ -142,22 +139,20 @@
 					key: self.key,
 					partnerType: self.partnerType
 				};
-				/*
+				
 				this.$http({
-					url: 'listPartner.json',
+					url: 'clue/client/list',
 					method: 'GET',
 					data: postData
 				}).then(res => {
 					self.tableData = res;
 				})
-				*/
-				self.tableData = requestData.data;
 			},
 			goToDetail(item) {
 				this.$router.push({
 					path: '/expand_customerDetail',
 					query: {
-						// partnerId: item.partnerId
+						customerId: item.id
 					}
 				})
 			},
@@ -173,13 +168,16 @@
 				if (self.partnerType== null || self.partnerType == undefined) {
 					self.partnerType = '';
 				}
-				self.getPartnerList(self.nowPage);
+				self.getCustomerList(self.nowPage);
 			},
 			handleCurrentChange(val) {
 				// this.getSalaryList(val);
 			},
 			tabPress(tab) {
-
+				console.log(tab.index);
+				if (tab.index == 1) {
+					this.getCustomerList(1);
+				}
 			}
 		},
 		filters: {

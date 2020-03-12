@@ -193,7 +193,7 @@
             }
         },
         created(){
-            this.getUserInfo();
+            // this.getUserInfo();
             this.handleListener();
             this.changeDate();
         },
