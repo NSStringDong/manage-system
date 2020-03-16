@@ -10,7 +10,9 @@ Router.prototype.push = function push(location) {
 }
 
 const tabs = r => require.ensure([], () => r(require('../components/page/Tabs.vue')), 'tabs');
+const home = r => require.ensure([], () => r(require('../components/common/Home.vue')), 'home');
 const login = r => require.ensure([], () => r(require('../components/page/Login.vue')), 'login');
+const dashboard = r => require.ensure([], () => r(require('../components/page/Dashboard.vue')), 'dashboard');
 /***********************************运营管理******************************/
 const base_cooperation = r => require.ensure([], () => r(require('../components/page/operation/base_cooperation.vue')), 'base_cooperation');
 const partnerDetail = r => require.ensure([], () => r(require('../components/page/operation/base_cooperation_detail.vue')), 'base_cooperation_detail');
@@ -92,7 +94,10 @@ const system_player = r => require.ensure([], () => r(require('../components/pag
  * 通用路由表
  * @type {Array}
  */
-export const constantRouterMap = [{
+export let constantRouterMap = [{
+	path: '/',
+	redirect: '/dashboard'
+},{
 	path: '/login',
 	component: login,
 	meta: { 
@@ -100,47 +105,101 @@ export const constantRouterMap = [{
 	}
 }, {
 	path: '/',
-	component: () => import(/* webpackChunkName: "home" */ '../components/common/Home.vue'),
+	component: home,
 	meta: { 
 		title: '自述文件' 
 	},
 	children: [{
 		path: '/dashboard',
-		component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/Dashboard.vue'),
+		component: dashboard,
 		meta: { 
 			title: '系统首页' 
 		}
-	}]
-}];
-/**
- * 动态路由表
- * @type {Array}
- */
-export const asyncRouterMap = [{
-	// 权限页面
-	path: '/permission',
-	component: () => import(/* webpackChunkName: "permission" */ '../components/page/Permission.vue'),
-	meta: { 
-		title: '权限测试', 
-		permission: true 
-	},
-	children: [{
-		path: '/404',
-		component: () => import(/* webpackChunkName: "404" */ '../components/page/404.vue'),
+	}, {
+		path: '/tabs',
+		component: tabs,
 		meta: { 
-			title: '404' 
+			title: 'tab选项卡' 
 		}
 	}, {
-		path: '/403',
-		component: () => import(/* webpackChunkName: "403" */ '../components/page/403.vue'),
-		meta: { 
-			title: '403' 
+		path: '/expand_customer',
+		component: expand_customer,
+		meta: {
+			title: '客户管理'
+		}
+	}, {
+		path: '/expand_customerDetail',
+		component: expand_customerDetail,
+		meta: {
+			title: '客户详情'
+		}
+	}, {
+		path: '/expand_data',
+		component: expand_data,
+		meta: {
+			title: '拓展管理'
+		}
+	}, {
+		path: '/expand_dataDetail',
+		component: expand_dataDetail,
+		meta: {
+			title: '拓展详情'
 		}
 	}]
+}];
+
+export let asyncRouterMap = [{
+	path: '/',
+	redirect: '/dashboard'
 }, {
-	path: '*',
-	redirect: '/404',
-	hidden: true
+	path: '/login',
+	component: login,
+	meta: { 
+		title: '用户登录' 
+	}
+}, {
+	path: '/',
+	component: home,
+	meta: { 
+		title: '自述文件' 
+	},
+	children: [{
+		path: '/dashboard',
+		component: dashboard,
+		meta: { 
+			title: '系统首页' 
+		}
+	}, {
+		path: '/tabs',
+		component: tabs,
+		meta: { 
+			title: 'tab选项卡' 
+		}
+	}, {
+		path: '/expand_customer',
+		component: expand_customer,
+		meta: {
+			title: '客户管理'
+		}
+	}, {
+		path: '/expand_customerDetail',
+		component: expand_customerDetail,
+		meta: {
+			title: '客户详情'
+		}
+	}, {
+		path: '/expand_data',
+		component: expand_data,
+		meta: {
+			title: '拓展管理'
+		}
+	}, {
+		path: '/expand_dataDetail',
+		component: expand_dataDetail,
+		meta: {
+			title: '拓展详情'
+		}
+	}]
 }];
 
 export const allRouterMap = [{
@@ -159,353 +218,10 @@ export const allRouterMap = [{
 			title: '系统首页' 
 		}
 	}, {
-		path: '/base_cooperation',
-		component: base_cooperation,
-		meta: { 
-			title: '合作伙伴' 
-		}
-	}, {
-		path: '/base_cooperation_detail',
-		component: partnerDetail,
-		meta: {
-			title: '合作伙伴详情'
-		}
-	}, {
-		path: '/base_fee',
-		component: base_fee,
-		meta: {
-			title: '资费定义'
-		}
-	}, {
-		path: '/base_rule',
-		component: base_rule,
-		meta: { 
-			title: '结算规则' 
-		}
-	}, {
-		path: '/base_user',
-		component: base_user,
-		meta: {
-			title: '用户管理'
-		}
-	}, {
-		path: '/base_chargeOrder',
-		component: base_chargeOrder,
-		meta: {
-			title: '充电订单'
-		}
-	}, {
-		path: '/base_rechargeMoney',
-		component: base_rechargeMoney,
-		meta: {
-			title: '营收管理'
-		}
-	}, {
-		path: '/base_coupon',
-		component: base_coupon,
-		meta: {
-			title: '月卡管理'
-		}
-	}, {
-		path: '/base_message',
-		component: base_message,
-		meta: {
-			title: '用户反馈'
-		}
-	}, {
-		path: '/presale_contract',
-		component: presale_contract,
-		meta: {
-			title: '合同管理'
-		}
-	}, {
-		path: '/presale_send',
-		component: presale_send,
-		meta: {
-			title: '发货申请'
-		}
-	}, {
-		path: '/presale_online',
-		component: presale_online,
-		meta: {
-			title: '上线申请'
-		}
-	}, {
-		path: '/presale_siteSurvey',
-		component: presale_siteSurvey,
-		meta: {
-			title: '站点勘察'
-		}
-	}, {
-		path: '/presale_electrician',
-		component: presale_electrician,
-		meta: {
-			title: '电工管理'
-		}
-	}, {
-		path: '/presale_order',
-		component: presale_order,
-		meta: {
-			title: '订货管理'
-		}
-	}, {
-		path: '/presale_reject',
-		component: presale_reject,
-		meta: {
-			title: '退货管理'
-		}
-	}, {
-		path: '/presale_transfer',
-		component: presale_transfer,
-		meta: {
-			title: '迁移管理'
-		}
-	}, {
-		path: '/site_station',
-		component: site_station,
-		meta: {
-			title: '自行车充电站'
-		}
-	}, {
-		path: '/site_device',
-		component: site_device,
-		meta: {
-			title: '设备管理'
-		}
-	}, {
-		path: '/site_module',
-		component: site_module,
-		meta: {
-			title: '充电口'
-		}
-	}, {
-		path: '/site_meshModule',
-		component: site_meshModule,
-		meta: {
-			title: '无线中继'
-		}
-	}, {
-		path: '/site_simManage',
-		component: site_simManage,
-		meta: {
-			title: 'sim卡管理'
-		}
-	}, {
-		path: '/defend_warning',
-		component: defend_warning,
-		meta: {
-			title: '告警管理'
-		}
-	}, {
-		path: '/defend_orderAnalys',
-		component: defend_orderAnalys,
-		meta: {
-			title: '异常订单分析'
-		}
-	}, {
-		path: '/defend_hitchAnalys',
-		component: defend_hitchAnalys,
-		meta: {
-			title: '故障分析'
-		}
-	}, {
-		path: '/defend_upgrade',
-		component: defend_upgrade,
-		meta: {
-			title: '升级任务'
-		}
-	}, {
-		path: '/defend_hardDevice',
-		component: defend_hardDevice,
-		meta: {
-			title: '硬件管理'
-		}
-	}, {
-		path: '/defend_maintance',
-		component: defend_maintance,
-		meta: {
-			title: '维修单'
-		}
-	}, {
-		path: '/defend_maintanceAnalys',
-		component: defend_maintanceAnalys,
-		meta: {
-			title: '维修单分析'
-		}
-	}, {
-		path: '/defend_map',
-		component: defend_map,
-		meta: {
-			title: '上报地图'
-		}
-	}, {
-		path: '/defend_message',
-		component: defend_message,
-		meta: {
-			title: '消息记录'
-		}
-	}, {
-		path: '/defend_testOrder',
-		component: defend_testOrder,
-		meta: {
-			title: '测试站订单'
-		}
-	}, {
-		path: '/finance_carBill',
-		component: finance_carBill,
-		meta: {
-			title: '工单开票回款'
-		}
-	}, {
-		path: '/finance_installer',
-		component: finance_installer,
-		meta: {
-			title: '安装商账单'
-		}
-	}, {
-		path: '/finance_4SBill',
-		component: finance_4SBill,
-		meta: {
-			title: '4S店账单'
-		}
-	}, {
-		path: '/finance_stationBill',
-		component: finance_stationBill,
-		meta: {
-			title: '站点账单'
-		}
-	}, {
-		path: '/finance_propertyBill',
-		component: finance_propertyBill,
-		meta: {
-			title: '物业账单'
-		}
-	}, {
-		path: '/finance_reward',
-		component: finance_reward,
-		meta: {
-			title: '安装补贴'
-		}
-	}, {
-		path: '/finance_applyCash',
-		component: finance_applyCash,
-		meta: {
-			title: '提现申请'
-		}
-	}, {
-		path: '/finance_liquidation_old',
-		component: finance_liquidation_old,
-		meta: {
-			title: '财务清算表(旧)'
-		}
-	}, {
-		path: '/finance_liquidation',
-		component: finance_liquidation,
-		meta: {
-			title: '财务清算表'
-		}
-	}, {
-		path: '/finance_commercial',
-		component: finance_commercial,
-		meta: {
-			title: '资产报表'
-		}
-	}, {
-		path: '/finance_ammeter',
-		component: finance_ammeter,
-		meta: {
-			title: '抄表'
-		}
-	}, {
-		path: '/charts_bikeAnalys',
-		component: charts_bikeAnalys,
-		meta: {
-			title: '自行车分析'
-		}
-	}, {
-		path: '/charts_operationAnalys',
-		component: charts_operationAnalys,
-		meta: {
-			title: '运营数据'
-		}
-	}, {
-		path: '/charts_carAnalys',
-		component: charts_carAnalys,
-		meta: {
-			title: '工单分析'
-		}
-	}, {
-		path: '/charts_managerAnalys',
-		component: charts_managerAnalys,
-		meta: {
-			title: '业务员分析'
-		}
-	}, {
-		path: '/charts_mainAnalys',
-		component: charts_mainAnalys,
-		meta: {
-			title: '公司业务分析'
-		}
-	}, {
-		path: '/performance_analys',
-		component: performance_analys,
-		meta: {
-			title: '绩效分析'
-		}
-	}, {
-		path: '/expand_customer',
-		component: expand_customer,
-		meta:{
-			title:'客户管理'
-		}
-	}, {
-		path: '/expand_customerDetail',
-		component: expand_customerDetail,
-		meta:{
-			title:'客户详情'
-		}
-	}, {
-		path: '/expand_data',
-		component: expand_data,
-		meta: {
-			title: `数据中心`
-		}
-	}, {
-		path: '/expand_dataDetail',
-		component: expand_dataDetail,
-		meta: {
-			title: `拓展业务详情`
-		}
-	}, {
-		path: '/system_user',
-		component: system_user,
-		meta: {
-			title: '用户管理'
-		}
-	}, {
-		path: '/system_form',
-		component: system_form,
-		meta: {
-			title: '部门管理'
-		}
-	}, {
-		path: '/system_player',
-		component: system_player,
-		meta: {
-			title: '角色管理'
-		}
-	}, {
 		path: '/tabs',
 		component: tabs,
 		meta: { 
 			title: 'tab选项卡' 
-		}
-	}, {
-		// vue-schart组件
-		path: '/charts',
-		component: () => import('../components/page/BaseCharts.vue'),
-		meta: { 
-			title: 'schart图表' 
 		}
 	}, {
 		// 权限页面
@@ -538,11 +254,59 @@ export const allRouterMap = [{
 	path: '*',
 	redirect: '/404'
 }];
+
+const createRouter = () => new Router({
+	routes: constantRouterMap
+})
+const router = createRouter();
+
+// 清空路由
+export function resetRouter() {
+	const newRouter = createRouter();
+	router.matcher = newRouter.matcher
+}
+
+export default router
+
+/*
 export default new Router({
-	routes: allRouterMap
+	routes: constantRouterMap
 });
+*/
 /*
 export default new Router({
 	routes: []
 });
 */
+export let createRoute = function(routes) {
+	routes = JSON.parse(routes);
+	let routeChild = routes.content;
+	let routeArr = [];
+	routeChild.forEach(item => {
+		item.children.forEach(element => {
+			routeArr.push({
+				path: insertString(element.path),
+				component: element.component,
+				meta: {
+					title: element.name
+				}
+			})
+		})
+	});
+	routeArr = routeArr.map(item => {
+		item = formatRoute(item);
+		return item;
+	});
+	return routeArr;
+};
+
+const formatRoute = (item) => {
+	let route = item;
+	route.component = eval(item.component);
+	return route;
+}
+
+function insertString (val) {
+	let insertStr = `/${val}`;
+	return insertStr;
+}

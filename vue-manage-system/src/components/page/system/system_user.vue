@@ -87,7 +87,7 @@
 			}
 		},
 		created() {
-			this.getUserList(0);
+			// this.getUserList(0);
 		},
 		mounted() {
 

@@ -31,15 +31,16 @@
 
 <script>
 import bus from '../common/bus';
+import {createMenu} from '../../utils/sideBar.js';
 export default {
 	data() {
 		return {
 			collapse: false,
-			items: [{
+			items: [/*{
 				icon: 'el-icon-s-platform',
 				index: 'dashboard',
 				title: '系统首页'
-			}, /*{
+			}, {
 				icon: 'el-icon-s-cooperation',
 				index: 'operation',
 				title: '运营管理',
@@ -100,7 +101,7 @@ export default {
 					index: 'presale_transfer',
 					title: '迁移管理'
 				}]
-			}, */{
+			}, {
 				icon: 'el-icon-s-custom',
 				index: 'expand',
 				title: '拓展管理',
@@ -111,7 +112,7 @@ export default {
 					index: 'expand_data',
 					title: '数据中心'
 				}]
-			}, /*{
+			}, {
 				icon: 'el-icon-location',
 				index: 'site',
 				title: '站点管理',
@@ -232,7 +233,7 @@ export default {
 					index: 'performance_analys',
 					title: '绩效分析'
 				}]
-			}, */{
+			}, {
 				icon: 'el-icon-s-tools',
 				index: 'system',
 				title: '系统管理',
@@ -257,7 +258,7 @@ export default {
 					index: '404',
 					title: '404页面'
 				}]
-			}]
+			}*/]
 		};
 	},
 	computed: {
@@ -281,9 +282,12 @@ export default {
 			this.collapse = msg;
 			bus.$emit('collapse-content', msg);
 		});
-		bus.$on('menu', function(value) {
-			console.info('menu',value);
-		});
+		let menu = localStorage.getItem('menu');
+	    // 创建菜单
+	    let sideBar = createMenu(menu);
+	    this.items = createMenu(menu);
+	 //    localStorage.setItem('sidebar', JSON.stringify(sideBar));
+		// this.items = JSON.parse(localStorage.getItem('sidebar'));
 	}
 };
 </script>

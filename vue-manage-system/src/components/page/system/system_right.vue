@@ -109,7 +109,7 @@
 			}
 		},
 		created() {
-			this.getRightList(1);
+			// this.getRightList(1);
 		},
 		mounted() {
 

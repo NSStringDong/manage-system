@@ -73,31 +73,31 @@
 								</li>
 								<li>
 									<span>客户办公地址：</span>
-									<p>科兴科学园B1栋102室</p>
+									<p>{{customerInfo.address}}</p>
 								</li>
 								<li>
 									<span>所属区域：</span>
-									<p>南部战区-深圳城市群-深圳-南山区</p>
+									<p>{{customerInfo.regionCode}}</p>
 								</li>
 								<li>
 									<span>客户手机号：</span>
-									<p>15556788765</p>
+									<p>{{customerInfo.clientMobile}}</p>
 								</li>
 								<li>
 									<span>客户类型：</span>
-									<p>合伙人</p>
+									<p>{{customerInfo.clientTypeCode}}</p>
 								</li>
 								<li>
 									<span>客户归属：</span>
-									<p>刘全能</p>
+									<p>{{customerInfo.currentDirectorId}}</p>
 								</li>
 								<li>
 									<span>创建时间：</span>
-									<p>2020-02-02 15:33</p>
+									<p>{{customerInfo.createTime}}</p>
 								</li>
 								<li>
 									<span>状态：</span>
-									<p>已签约</p>
+									<p>{{customerInfo.clueStatusCode}}</p>
 								</li>
 							</ul>
 						</div>
@@ -106,112 +106,40 @@
 							<ul class="content-ul">
 								<li>
 									<span>客户行业：</span>
-									<p>快递站点</p>
+									<p>{{customerInfo.industry}}</p>
 								</li>
 								<li>
 									<span>公司名称：</span>
-									<p>顺丰速运</p>
+									<p>{{customerInfo.company}}</p>
 								</li>
 								<li>
 									<span>客户职位：</span>
-									<p>站长</p>
+									<p>{{customerInfo.industry}}</p>
 								</li>
 								<li>
 									<span>意向合作区域：</span>
-									<p>南部战区-深圳城市群-深圳-南山区</p>
+									<p>{{customerInfo.industry}}</p>
 								</li>
 								<li>
 									<span>预估落地设备数量：</span>
-									<p>合伙人</p>
+									<p>{{customerInfo.estimateDeviceNumber}}</p>
 								</li>
 								<li>
 									<span>商谈要点记录：</span>
-									<p>刘全能</p>
+									<p>{{customerInfo.industry}}</p>
 								</li>
 							</ul>
 						</div>
 						<div class="el-main_title">联系人</div>
 						<div class="el-main_content border-bottom content-grid">
-							<el-card shadow="hover">
+							<el-card shadow="hover" v-for="item in customerInfo.clientClueContacts" :key="item.index">
 								<div class="card-content">
 									<div class="card-img"></div>
 									<div class="card-user-info">
 										<ul class="content-ul">
-											<li>张思杰</li>
-											<li>员工</li>
-											<li>13811112222</li>
-										</ul>
-									</div>
-								</div>
-							</el-card>
-							<el-card shadow="hover">
-								<div class="card-content">
-									<div class="card-img"></div>
-									<div class="card-user-info">
-										<ul class="content-ul">
-											<li>张思杰</li>
-											<li>员工</li>
-											<li>13811112222</li>
-										</ul>
-									</div>
-								</div>
-							</el-card>
-							<el-card shadow="hover">
-								<div class="card-content">
-									<div class="card-img"></div>
-									<div class="card-user-info">
-										<ul class="content-ul">
-											<li>张思杰</li>
-											<li>员工</li>
-											<li>13811112222</li>
-										</ul>
-									</div>
-								</div>
-							</el-card>
-							<el-card shadow="hover">
-								<div class="card-content">
-									<div class="card-img"></div>
-									<div class="card-user-info">
-										<ul class="content-ul">
-											<li>张思杰</li>
-											<li>员工</li>
-											<li>13811112222</li>
-										</ul>
-									</div>
-								</div>
-							</el-card>
-							<el-card shadow="hover">
-								<div class="card-content">
-									<div class="card-img"></div>
-									<div class="card-user-info">
-										<ul class="content-ul">
-											<li>张思杰</li>
-											<li>员工</li>
-											<li>13811112222</li>
-										</ul>
-									</div>
-								</div>
-							</el-card>
-							<el-card shadow="hover">
-								<div class="card-content">
-									<div class="card-img"></div>
-									<div class="card-user-info">
-										<ul class="content-ul">
-											<li>张思杰</li>
-											<li>员工</li>
-											<li>13811112222</li>
-										</ul>
-									</div>
-								</div>
-							</el-card>
-							<el-card shadow="hover">
-								<div class="card-content">
-									<div class="card-img"></div>
-									<div class="card-user-info">
-										<ul class="content-ul">
-											<li>张思杰</li>
-											<li>员工</li>
-											<li>13811112222</li>
+											<li>{{item.contactorName}}</li>
+											<li>{{item.contactorPosition}}</li>
+											<li>{{item.contactorMobile}}</li>
 										</ul>
 									</div>
 								</div>
@@ -222,15 +150,15 @@
 							<ul class="content-ul">
 								<li>
 									<span>银行户名：</span>
-									<p>张无忌</p>
+									<p>{{customerInfo.accountName}}</p>
 								</li>
 								<li>
 									<span>开户行名称：</span>
-									<p>招商银行科兴科学园分行</p>
+									<p>{{customerInfo.openingBank}}</p>
 								</li>
 								<li>
 									<span>银行账户：</span>
-									<p>6217007200024678891</p>
+									<p>{{customerInfo.bankAccountNumber}}</p>
 								</li>
 							</ul>
 						</div>
@@ -239,32 +167,12 @@
 				<el-tab-pane label="跟进记录" name="1">
 					<el-main style="border: 1px solid #e9eaec;">
 						<el-timeline>
-							<el-timeline-item timestamp="2018/4/12" placement="top">
+							<el-timeline-item v-for="item in visitList" :timestamp="item.operationDate" :key="item.id" placement="top">
 								<el-card shadow="hover">
 									<div class="card-user-info" style="margin-left: 0px;">
 										<ul class="content-ul">
-											<li><h4>更新 Github 模板</h4></li>
-											<li><p>王小虎 提交于 2018/4/3 20:46</p></li>
-										</ul>
-									</div>
-								</el-card>
-							</el-timeline-item>
-							<el-timeline-item timestamp="2018/4/3" placement="top">
-								<el-card shadow="hover">
-									<div class="card-user-info" style="margin-left: 0px;">
-										<ul class="content-ul">
-											<li><h4>更新 Github 模板</h4></li>
-											<li><p>王小虎 提交于 2018/4/3 20:46</p></li>
-										</ul>
-									</div>
-								</el-card>
-							</el-timeline-item>
-							<el-timeline-item timestamp="2018/4/2" placement="top">
-								<el-card shadow="hover">
-									<div class="card-user-info" style="margin-left: 0px;">
-										<ul class="content-ul">
-											<li><h4>更新 Github 模板</h4></li>
-											<li><p>王小虎 提交于 2018/4/3 20:46</p></li>
+											<li><h4>{{item.operatorName}}</h4></li>
+											<li><p>{{item.traceDesc}}</p></li>
 										</ul>
 									</div>
 								</el-card>
@@ -272,7 +180,7 @@
 						</el-timeline>
 					</el-main>
 				</el-tab-pane>
-				<el-tab-pane label="拜访管理" name="2">
+				<el-tab-pane label="站点线索" name="2">
 					<div class="search-content">
 						<div class="search-input">
 							<el-input placeholder='请输入内容' v-model="key" clearable>
@@ -486,10 +394,11 @@
 					value: '7'
 				}]),
 				partnerType: '',
-				rateValue: 5,
+				rateValue: null,
 				isChangeRate: false,
 				changeRateValue: null,
-				colors: ['#99A9BF', '#32b16c', '#32b16c']
+				colors: ['#99A9BF', '#32b16c', '#32b16c'],
+				visitList: []					// 跟进记录
 			}
 		},
 		created() {
@@ -507,6 +416,10 @@
 			}
 		},
 		methods: {
+			/**
+			 * 查询客户详情
+			 * @return {Object} 客户详情
+			 */
 			getCustomerDetail() {
 				let self = this;
 				let postData = {
@@ -518,6 +431,25 @@
 					data: postData
 				}).then(res => {
 					self.customerInfo = res;
+					self.rateValue = res.starLevel ? parseInt(res.starLevel) : null;
+				})
+			},
+			/**
+			 * 查询跟进记录
+			 * @return {Array} 跟进记录
+			 */
+			getVisitList() {
+				let self = this;
+				let postData = {
+					clueTypeCode: 2,
+					relationId: self.customerId
+				};
+				self.$http({
+					url: 'clue/track/list',
+					method: 'GET',
+					data: postData
+				}).then(res => {
+					self.visitList = res;
 				})
 			},
 			/**
@@ -572,7 +504,10 @@
 				// this.getSalaryList(val);
 			},
 			tabPress(tab) {
-
+				if (tab.index == 1) {
+					console.log(`拜访记录`);
+					this.getVisitList();
+				}
 			},
 			userRateHandler(val) {
 				console.log(val);

@@ -60,6 +60,7 @@
 </template>
 <script>
 import bus from '../common/bus';
+import router, {resetRouter} from '../../router/index.js';
 export default {
     data() {
         return {
@@ -85,7 +86,10 @@ export default {
             if (command == 'loginout') {
                 localStorage.removeItem('username');
                 localStorage.removeItem('token');
-                this.$router.push('/login');
+                localStorage.removeItem('menu');
+                this.$router.replace('/login');
+                // 退出登录以后清空路由
+                resetRouter();
             }
         },
         // 侧边栏折叠

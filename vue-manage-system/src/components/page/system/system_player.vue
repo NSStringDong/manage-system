@@ -81,7 +81,7 @@
 			}
 		},
 		created() {
-			this.getPlayerList(0);
+			// this.getPlayerList(0);
 		},
 		mounted() {
 

@@ -141,7 +141,7 @@
 			}
 		},
 		created() {
-			this.getOrganizationList(1);
+			// this.getOrganizationList(1);
 		},
 		mounted() {
 

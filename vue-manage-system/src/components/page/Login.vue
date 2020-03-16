@@ -21,7 +21,7 @@
                             </span>
                         </div>
                         
-                        <el-button type="primary" :disabled="isDisable" @click="loginIn()">登录</el-button>
+                        <el-button type="primary" :disabled="isDisable" @click="getUserMenus()">登录</el-button>
                         
                         <div class="remeberCheck" style="padding-top: 10px;">
                             <!-- <el-checkbox style="margin-left:0px;">记住我</el-checkbox> -->
@@ -38,6 +38,8 @@
 
 <script type="text/javascript">
     import {menuData} from '../../utils/mockData.js';
+    // import router from '../../router/index.js';
+    import router, {constantRouterMap, asyncRouterMap, createRoute} from '../../router/index.js';
     export default {
         name: 'login',
         data: function(){
@@ -86,13 +88,6 @@
         },
         methods: {
             loginIn() {
-                /*
-                this.$message.success('登录成功');
-                localStorage.setItem('ms_username', '测试人员');
-                this.$router.replace({
-                    path: '/'
-                })
-                */
                 let self = this;
                 let pwdString = this.$md5(self.loginData.password);
                 this.$http({
@@ -108,7 +103,7 @@
                         this.$message.success('登录成功');
                         localStorage.setItem('token', res.token);
                         localStorage.setItem('username', res.user.username);
-                        self.getUserMenus();
+                        // self.getUserMenus();
                         this.$router.replace({
                             path: '/dashboard'
                         })
@@ -116,8 +111,21 @@
                 })
             },
             getUserMenus() {
-                // this.$store.dispath('setMenuArray', menuData);
                 localStorage.setItem('menu', JSON.stringify(menuData));
+                // 创建路由
+                // let menu = localStorage.getItem('menu');
+                let newRoute = createRoute(JSON.stringify(menuData));
+                console.info('route', newRoute);
+                // 每次从静态路由表拼接
+                let finalRoute = constantRouterMap[2].children.concat(newRoute);
+                // console.info('finalRoute', finalRoute);
+                // 拼接完成后给到动态路由表
+                asyncRouterMap[2].children = finalRoute;
+                console.info('asyncRouterMap', asyncRouterMap);
+                router.addRoutes(asyncRouterMap);
+                this.$router.replace({
+                    path: '/dashboard'
+                })
                 // bus.$emit('menu', menuData);
                 // this.$http({
                 //     url: 'api/menus',
