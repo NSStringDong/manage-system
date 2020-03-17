@@ -184,24 +184,25 @@
 						</div>
 					</div>
 					<div class="table-content">
-						<el-table :data="tableData" border stripe @cell-dblclick="goToDetail" @filter-change="filterHandler">
-							<el-table-column align="center" prop="partnerId" label="ID"></el-table-column>
-							<el-table-column align="center" prop="partnerName" label="名称"></el-table-column>
-							<el-table-column align="center" prop="partnerType" label="类型" column-key="partnerType" :filters="this.partnerTypeDic" :filter-multiple="false">
+						<el-table :data="clueList" border stripe @cell-dblclick="goToDetail" @filter-change="filterHandler">
+							<el-table-column align="center" prop="clueStationName" label="站点名称"></el-table-column>
+							<el-table-column align="center" prop="address" label="站点地址"></el-table-column>
+							<el-table-column align="center" prop="regionCode" label="所属区域"></el-table-column>
+							<el-table-column align="center" prop="stationTypeCode" label="站点类型" column-key="partnerType" :filters="this.partnerTypeDic" :filter-multiple="false">
 								<template slot-scope="scope">
-									<p>{{scope.row.partnerType | getPartnerType}}</p>
+									<p>{{scope.row.stationTypeCode | getPartnerType}}</p>
 								</template>
 							</el-table-column>
-							<el-table-column align="center" label="结算方式" >
+							<el-table-column align="center" prop="contact" label="联系人"></el-table-column>
+							<el-table-column align="center" label="站点状态" >
 								<template slot-scope="scope">
-									<p>{{scope.row.settlementType | getProrationType}}</p>
+									<p>{{scope.row.clueStatusCode | getProrationType}}</p>
 								</template>
 							</el-table-column>
 							<el-table-column align="center" label="操作" >
 								<template slot-scope="scope">
-									<el-button type="success" @click="goToDetail(scope.row)" plain>详情</el-button>
-									<el-button type="primary" samll>编辑</el-button>
-									<el-button type="danger" samll>删除</el-button>
+									<el-button type="success" plain @click="goToDetail(scope.row)">详情</el-button>
+									<el-button type="danger" @click="showDeleteClue(scope.row)" samll>删除</el-button>
 								</template>
 							</el-table-column>
 						</el-table>
@@ -386,11 +387,14 @@
 					key: 5,
 					label: '北京烤鸭'
 				}],
-				pushValue: []
+				pushValue: [],
+				clueList: [],					// 拓展任务列表
+				baseUrl: `http://192.168.4.68:8000/api/`
 			}
 		},
 		created() {
-			this.getPartnerList(1);
+			// this.getPartnerList(1);
+			this.getStationClueList();
 		},
 		mounted() {
 
@@ -413,6 +417,24 @@
 			}
 		},
 		methods: {
+			/**
+			 * 查询拓展任务列表
+			 * @return {Array} 拓展任务列表
+			 */
+			getStationClueList() {
+				let self = this;
+				let postData = {
+					// blurry: self.customerId
+					blurry: ``
+				};
+				self.$http({
+					url: 'clue/station/list',
+					method: 'GET',
+					data: postData
+				}).then(res => {
+					self.clueList = res;
+				})
+			},
 			/**
 			 * 获取合作伙伴列表
 			 * @param  {Number} currentPage 当前页数
@@ -443,11 +465,15 @@
 				this.$router.push({
 					path: '/expand_dataDetail',
 					query: {
-						// partnerId: item.partnerId
+						stationClueId: item.id
 					}
 				})
 			},
 			downloadExcel() {
+				this.$message({
+					message: `无此接口`,
+					type: 'error'
+				});
 				/*
 				axios.get(`${this.baseUrl}salary/exportSalary.do?date=${this.finalDate}`,
 				{
@@ -501,14 +527,13 @@
 					this.isLoading = true;
 					console.log(this.chooseValue.target.files[0]);
 					let chooseFile = new FormData();
-					chooseFile.append('file',this.chooseValue.target.files[0]);
+					chooseFile.append('whiteXls',this.chooseValue.target.files[0]);
 					// chooseFile.append('date',this.finalLogDate);
-					let url = '';
+					let url = `${this.baseUrl}clue/station/batchImport`;
 					axios.post(url,
 					chooseFile,{
 						headers:{
-							"Content-Type": "multipart/form-data",
-							'token': window.localStorage.getItem('token')
+							"Content-Type": "multipart/form-data"
 						}
 					}).then((res) => {
 						console.log(res);
@@ -545,6 +570,68 @@
                     type: 'info',
                     message: `放弃操作`
                 });
+			},
+			/**
+			 * 删除站点线索
+			 * @param  {Object} item 当前线索
+			 * @return {Object}      
+			 */
+			showDeleteClue(item) {
+				this.$confirm(`确认删除线索${item.clueStationName}？`,`删除线索`, {
+                    confirmButtonText: '是',
+                    cancelButtonText: '否',
+                    type: 'warning',
+                    distinguishCancelAndClose: true,
+                    // center: true,
+                    beforeClose: (action, instance, done) => {
+                        if (action === 'confirm') {
+                            instance.confirmButtonLoading = true;
+                            instance.confirmButtonText = '执行中...';
+                            setTimeout(() => {
+                                done();
+                                setTimeout(() => {
+                                    this.deleteClue(item);
+                                    instance.confirmButtonLoading = false;
+                                }, 300);
+                            }, 3000);
+                        } else {
+                            done();
+                        }
+                    }
+                }).then(() => {
+                    
+                }).catch(action => {
+                    if (action === 'close'||action === 'cancel') {
+                        this.$message({
+                            type: 'info',
+                            message: `放弃操作`
+                        });
+                    }          
+                });
+			},
+			deleteClue(item) {
+				let self = this;
+				let postData = {
+					clueId: item.id
+				};
+				this.$http({
+					url: `clue/station/delete`,
+					method: 'GET',
+					data: postData
+				}).then((res) => {
+					/*
+					if (res.errorCode >= 0) {
+						this.$message.success(`删除成功`);
+						this.getStationClueList();
+					} else {
+						self.$message({
+							showClose: true,
+							message: res.data.msg,
+							type: 'error'
+						});
+					}
+					*/
+				})
 			},
 			filterHandler(filters) {
 				let self = this;

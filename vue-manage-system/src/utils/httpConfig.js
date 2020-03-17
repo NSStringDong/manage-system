@@ -1,7 +1,7 @@
 let baseUrl = '/jweb_management/';
 if (process.env.NODE_ENV === 'development') {
-	baseUrl = 'http://47.112.158.89/xlradmin/';
-	// baseUrl = 'http://192.168.4.68:8000/api/';
+	// baseUrl = 'http://47.112.158.89/xlradmin/api/';
+	baseUrl = 'http://192.168.4.68:8000/api/';
 }
 
 /*

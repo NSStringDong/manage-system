@@ -19,6 +19,7 @@
 	}
 	.picture-box {
 		padding: 10px 20px;
+		width: 100%;
 	}
 	.picture-box p {
 		padding: 10px 0px;
@@ -55,40 +56,68 @@
 			<el-tabs v-model="message" @tab-click="tabPress">
 				<el-tab-pane label="基础资料" name="0">
 					<el-main class="el-border" style="margin-top: 20px;">
-						<!-- <div class="el-main_title">基础信息</div> -->
+						<div class="el-main_title">基础信息</div>
 						<div class="el-main_content border-bottom" style="border-top: 0px;">
 							<ul class="content-ul">
 								<li>
-									<span>客户名称：</span>
-									<p>张三丰</p>
+									<span>线索状态：</span>
+									<p>{{stationClueInfo.clueStatusCode}}</p>
 								</li>
 								<li>
-									<span>客户办公地址：</span>
-									<p>科兴科学园B1栋102室</p>
+									<span>线索站点名称：</span>
+									<p>{{stationClueInfo.clueStationName}}</p>
 								</li>
 								<li>
 									<span>所属区域：</span>
-									<p>南部战区-深圳城市群-深圳-南山区</p>
+									<p>{{stationClueInfo.regionCode}}</p>
 								</li>
 								<li>
-									<span>客户手机号：</span>
-									<p>15556788765</p>
+									<span>站点地址：</span>
+									<p>{{stationClueInfo.address}}</p>
 								</li>
 								<li>
-									<span>客户类型：</span>
-									<p>合伙人</p>
+									<span>站点类型：</span>
+									<p>{{stationClueInfo.stationTypeCode}}</p>
 								</li>
 								<li>
-									<span>客户归属：</span>
-									<p>刘全能</p>
+									<span>联系方式：</span>
+									<p>{{stationClueInfo.contact}}</p>
 								</li>
 								<li>
-									<span>创建时间：</span>
-									<p>2020-02-02 15:33</p>
+									<span>线索归属：</span>
+									<p>{{stationClueInfo.regionCode}}</p>
+								</li>
+								<li>
+									<span>车辆数量：</span>
+									<p>{{stationClueInfo.carNumber}}</p>
+								</li>
+								<li>
+									<span>骑手数量：</span>
+									<p>{{stationClueInfo.riderNumber}}</p>
+								</li>
+								<li>
+									<span>铅酸/锂电比例：</span>
+									<p>{{stationClueInfo.batteryRatio}}</p>
+								</li>
+								<li>
+									<span>电车/油车比例：</span>
+									<p>{{stationClueInfo.carTypeRatio}}</p>
+								</li>
+								<li>
+									<span>现有充电方式：</span>
+									<p>{{stationClueInfo.currentChargingWay}}</p>
+								</li>
+								<li>
+									<span>资费(单次)：</span>
+									<p>{{stationClueInfo.feeOnce}}</p>
+								</li>
+								<li>
+									<span>资费(包月)：</span>
+									<p>{{stationClueInfo.feeMonthly}}</p>
 								</li>
 								<li>
 									<span>状态：</span>
-									<p>已签约</p>
+									<p>{{stationClueInfo.regionCode}}</p>
 								</li>
 							</ul>
 						</div>
@@ -97,11 +126,11 @@
 							<ul class="content-ul">
 								<li>
 									<span>客户名称：</span>
-									<p>张三丰</p>
+									<p>{{stationContactInfo.clientName}}</p>
 								</li>
 								<li>
 									<span>客户手机号：</span>
-									<p>15556788765</p>
+									<p>{{stationContactInfo.clientMobile}}</p>
 								</li>
 							</ul>
 						</div>
@@ -176,11 +205,17 @@
 		data() {
 			return {
 				message: 0,
-				tabList: [false, false]
+				tabList: [false, false],
+				stationClueId: this.$route.query.stationClueId,
+				stationClueInfo: Object,
+				stationContactInfo: {
+					clientName: '', 			// 客户名称
+					clientMobile: ''			// 客户联系电话
+				}
 			}
 		},
 		created() {
-			
+			this.getstationClueInfo();
 		},
 		mounted() {
 
@@ -189,6 +224,40 @@
 
 		},
 		methods: {
+			/**
+			 * 查询线索详情
+			 * @return {Object} 详情
+			 */
+			getstationClueInfo() {
+				let self = this;
+				let postData = {
+					id: self.stationClueId
+				};
+				self.$http({
+					url: 'clue/station/find',
+					method: 'GET',
+					data: postData
+				}).then(res => {
+					self.stationClueInfo = res;
+					self.getCustomerDetail(res.clientId);
+				})
+			},
+			getCustomerDetail(clientId) {
+				let self = this;
+				let postData = {
+					id: clientId
+				};
+				self.$http({
+					url: 'clue/client/find',
+					method: 'GET',
+					data: postData
+				}).then(res => {
+					if (res) {
+						self.stationContactInfo.clientName = res.clientName;
+						self.stationContactInfo.clientMobile = res.clientMobile;
+					}
+				})
+			},
 			tabPress(tab) {
 				console.log(tab.name);
 			} 

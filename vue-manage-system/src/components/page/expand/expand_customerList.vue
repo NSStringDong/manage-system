@@ -143,7 +143,7 @@
 				this.$http({
 					url: 'clue/client/list',
 					method: 'GET',
-					data: postData
+					data: ""
 				}).then(res => {
 					self.tableData = res;
 				})

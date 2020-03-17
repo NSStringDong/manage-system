@@ -188,28 +188,28 @@
 							</el-input>
 						</div>
 						<div class="search-btn">
-							<el-button class="new-btn" type="primary">新建</el-button>
+							<!-- <el-button class="new-btn" type="primary">新建</el-button> -->
 						</div>
 					</div>
 					<div class="table-content">
-						<el-table :data="tableData" border stripe @cell-dblclick="goToDetail" @filter-change="filterHandler">
-							<el-table-column align="center" prop="partnerId" label="ID"></el-table-column>
-							<el-table-column align="center" prop="partnerName" label="名称"></el-table-column>
-							<el-table-column align="center" prop="partnerType" label="类型" column-key="partnerType" :filters="this.partnerTypeDic" :filter-multiple="false">
+						<el-table :data="clueList" border stripe @cell-dblclick="goToDetail" @filter-change="filterHandler">
+							<el-table-column align="center" prop="clueStationName" label="站点名称"></el-table-column>
+							<el-table-column align="center" prop="address" label="站点地址"></el-table-column>
+							<el-table-column align="center" prop="regionCode" label="所属区域"></el-table-column>
+							<el-table-column align="center" prop="stationTypeCode" label="站点类型" column-key="partnerType" :filters="this.partnerTypeDic" :filter-multiple="false">
 								<template slot-scope="scope">
-									<p>{{scope.row.partnerType | getPartnerType}}</p>
+									<p>{{scope.row.stationTypeCode | getPartnerType}}</p>
 								</template>
 							</el-table-column>
-							<el-table-column align="center" label="结算方式" >
+							<el-table-column align="center" prop="contact" label="联系人"></el-table-column>
+							<el-table-column align="center" label="站点状态" >
 								<template slot-scope="scope">
-									<p>{{scope.row.settlementType | getProrationType}}</p>
+									<p>{{scope.row.clueStatusCode | getProrationType}}</p>
 								</template>
 							</el-table-column>
 							<el-table-column align="center" label="操作" >
 								<template slot-scope="scope">
-									<el-button type="success" plain>详情</el-button>
-									<el-button type="primary" samll>编辑</el-button>
-									<el-button type="danger" samll>删除</el-button>
+									<el-button type="success" plain @click="goToStationClueDetail(scope.row)">详情</el-button>
 								</template>
 							</el-table-column>
 						</el-table>
@@ -398,7 +398,8 @@
 				isChangeRate: false,
 				changeRateValue: null,
 				colors: ['#99A9BF', '#32b16c', '#32b16c'],
-				visitList: []					// 跟进记录
+				visitList: [],					// 跟进记录
+				clueList: [], 					// 站点线索
 			}
 		},
 		created() {
@@ -450,6 +451,37 @@
 					data: postData
 				}).then(res => {
 					self.visitList = res;
+				})
+			},
+			/**
+			 * 查询站点线索
+			 * @return {Array} 站点线索
+			 */
+			getStationClueList() {
+				let self = this;
+				let postData = {
+					// blurry: self.customerId
+					blurry: ``
+				};
+				self.$http({
+					url: 'clue/station/list',
+					method: 'GET',
+					data: postData
+				}).then(res => {
+					self.clueList = res;
+				})
+			},
+			/**
+			 * 站点线索详情页面
+			 * @param  {Object} item 当前站点线索
+			 * @return {Null}      null
+			 */
+			goToStationClueDetail(item) {
+				this.$router.push({
+					path: '/expand_dataDetail',
+					query: {
+						stationClueId: item.id
+					}
 				})
 			},
 			/**
@@ -505,8 +537,11 @@
 			},
 			tabPress(tab) {
 				if (tab.index == 1) {
-					console.log(`拜访记录`);
+					console.log(`跟进记录`);
 					this.getVisitList();
+				} else if (tab.index == 2) {
+					console.log(`站点线索`);
+					this.getStationClueList();
 				}
 			},
 			userRateHandler(val) {
