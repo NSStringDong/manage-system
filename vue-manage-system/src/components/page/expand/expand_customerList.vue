@@ -141,11 +141,19 @@
 				};
 				
 				this.$http({
-					url: 'clue/client/list',
+					url: 'develop/api/clue/client/list',
 					method: 'GET',
 					data: ""
 				}).then(res => {
-					self.tableData = res;
+					if (res.errorCode >= 0) {
+						self.tableData = res.data;
+					} else {
+						self.$message({
+							showClose: true,
+							message: res.msg,
+							type: 'error'
+						});
+					}
 				})
 			},
 			goToDetail(item) {

@@ -161,32 +161,12 @@
 				<el-tab-pane label="跟进动态" name="1">
 					<el-main style="border: 1px solid #e9eaec;">
 						<el-timeline>
-							<el-timeline-item timestamp="2018/4/12" placement="top">
+							<el-timeline-item v-for="item in visitList" :timestamp="item.operationDate" :key="item.id" placement="top">
 								<el-card shadow="hover">
 									<div class="card-user-info" style="margin-left: 0px;">
 										<ul class="content-ul">
-											<li><h4>更新 Github 模板</h4></li>
-											<li><p>王小虎 提交于 2018/4/3 20:46</p></li>
-										</ul>
-									</div>
-								</el-card>
-							</el-timeline-item>
-							<el-timeline-item timestamp="2018/4/3" placement="top">
-								<el-card shadow="hover">
-									<div class="card-user-info" style="margin-left: 0px;">
-										<ul class="content-ul">
-											<li><h4>更新 Github 模板</h4></li>
-											<li><p>王小虎 提交于 2018/4/3 20:46</p></li>
-										</ul>
-									</div>
-								</el-card>
-							</el-timeline-item>
-							<el-timeline-item timestamp="2018/4/2" placement="top">
-								<el-card shadow="hover">
-									<div class="card-user-info" style="margin-left: 0px;">
-										<ul class="content-ul">
-											<li><h4>更新 Github 模板</h4></li>
-											<li><p>王小虎 提交于 2018/4/3 20:46</p></li>
+											<li><h4>{{item.operatorName}}</h4></li>
+											<li><p>{{item.traceDesc}}</p></li>
 										</ul>
 									</div>
 								</el-card>
@@ -211,7 +191,8 @@
 				stationContactInfo: {
 					clientName: '', 			// 客户名称
 					clientMobile: ''			// 客户联系电话
-				}
+				},
+				visitList: []
 			}
 		},
 		created() {
@@ -234,12 +215,21 @@
 					id: self.stationClueId
 				};
 				self.$http({
-					url: 'clue/station/find',
+					url: 'develop/api/clue/station/find',
 					method: 'GET',
 					data: postData
 				}).then(res => {
-					self.stationClueInfo = res;
-					self.getCustomerDetail(res.clientId);
+					if (res.errorCode >= 0) {
+						self.stationClueInfo = res.data;
+						self.getCustomerDetail(res.data.clientId);
+						self.getStationClueImageList();
+					} else {
+						self.$message({
+							showClose: true,
+							message: res.msg,
+							type: 'error'
+						});
+					}
 				})
 			},
 			getCustomerDetail(clientId) {
@@ -248,18 +238,74 @@
 					id: clientId
 				};
 				self.$http({
-					url: 'clue/client/find',
+					url: 'develop/api/clue/client/find',
 					method: 'GET',
 					data: postData
 				}).then(res => {
-					if (res) {
-						self.stationContactInfo.clientName = res.clientName;
-						self.stationContactInfo.clientMobile = res.clientMobile;
+					if (res.errorCode >= 0) {
+						if (res.data) {
+							self.stationContactInfo.clientName = res.data.clientName;
+							self.stationContactInfo.clientMobile = res.data.clientMobile;
+						} else {
+							self.$message({
+								showClose: true,
+								message: `暂无数据`,
+								type: 'error'
+							});
+						}
+					} else {
+						self.$message({
+							showClose: true,
+							message: res.msg,
+							type: 'error'
+						});
+					}
+				})
+			},
+			getStationClueImageList() {
+				let self = this;
+				let postData = {
+					clueId: self.stationClueId
+				};
+				self.$http({
+					url: 'develop/api/clue/station/findImageList/',
+					method: 'GET',
+					data: postData
+				}).then(res => {
+					
+				})
+			},
+			/**
+			 * 查询线索跟进动态
+			 * @return {Array} 动态记录
+			 */
+			getStationClueRecordList() {
+				let self = this;
+				let postData = {
+					clueTypeCode: 1,
+					relationId: self.stationClueId
+				};
+				self.$http({
+					url: 'develop/api/clue/track/list',
+					method: 'GET',
+					data: postData
+				}).then(res => {
+					if (res.errorCode >= 0) {
+						self.visitList = res.data;
+					} else {
+						self.$message({
+							showClose: true,
+							message: res.msg,
+							type: 'error'
+						});
 					}
 				})
 			},
 			tabPress(tab) {
-				console.log(tab.name);
+				console.log(tab.index);
+				if (tab.index == 1) {
+					this.getStationClueRecordList();
+				}
 			} 
 		}
 	}

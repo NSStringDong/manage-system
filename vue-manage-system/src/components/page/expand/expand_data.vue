@@ -389,7 +389,7 @@
 				}],
 				pushValue: [],
 				clueList: [],					// 拓展任务列表
-				baseUrl: `http://192.168.4.68:8000/api/`
+				baseUrl: `http://47.112.158.89/`
 			}
 		},
 		created() {
@@ -428,11 +428,19 @@
 					blurry: ``
 				};
 				self.$http({
-					url: 'clue/station/list',
+					url: 'develop/api/clue/station/list',
 					method: 'GET',
 					data: postData
 				}).then(res => {
-					self.clueList = res;
+					if (res.errorCode >= 0) {
+						self.clueList = res.data;
+					} else {
+						self.$message({
+							showClose: true,
+							message: res.msg,
+							type: 'error'
+						});
+					}
 				})
 			},
 			/**
@@ -470,10 +478,11 @@
 				})
 			},
 			downloadExcel() {
-				this.$message({
-					message: `无此接口`,
-					type: 'error'
-				});
+				// this.$message({
+				// 	message: `无此接口`,
+				// 	type: 'error'
+				// });
+				window.location.href = `${this.baseUrl}develop/api/clue/station/downloadTemplate`;
 				/*
 				axios.get(`${this.baseUrl}salary/exportSalary.do?date=${this.finalDate}`,
 				{
@@ -529,7 +538,7 @@
 					let chooseFile = new FormData();
 					chooseFile.append('whiteXls',this.chooseValue.target.files[0]);
 					// chooseFile.append('date',this.finalLogDate);
-					let url = `${this.baseUrl}clue/station/batchImport`;
+					let url = `${this.baseUrl}develop/api/clue/station/batchImport`;
 					axios.post(url,
 					chooseFile,{
 						headers:{
@@ -615,23 +624,28 @@
 					clueId: item.id
 				};
 				this.$http({
-					url: `clue/station/delete`,
+					url: `develop/api/clue/station/delete`,
 					method: 'GET',
 					data: postData
 				}).then((res) => {
-					/*
 					if (res.errorCode >= 0) {
 						this.$message.success(`删除成功`);
 						this.getStationClueList();
 					} else {
 						self.$message({
 							showClose: true,
-							message: res.data.msg,
+							message: res.msg,
 							type: 'error'
 						});
 					}
-					*/
 				})
+			},
+			/**
+			 * 获取所有战区
+			 * @return {Array} 战区列表
+			 */
+			getAllZone() {
+
 			},
 			filterHandler(filters) {
 				let self = this;
@@ -651,7 +665,9 @@
 				// this.getSalaryList(val);
 			},
 			tabPress(tab) {
-
+				if (tab.index == 0) {
+					
+				}
 			},
 			userRateHandler(val) {
 				console.log(val);

@@ -87,7 +87,7 @@
 			}
 		},
 		created() {
-			// this.getUserList(0);
+			this.getUserList(0);
 		},
 		mounted() {
 
@@ -118,7 +118,7 @@
 					page: currentPage
 				};
 				this.$http({
-					url: 'api/users',
+					url: 'xlradmin/api/users',
 					method: 'GET',
 					data: postData
 				}).then(res => {

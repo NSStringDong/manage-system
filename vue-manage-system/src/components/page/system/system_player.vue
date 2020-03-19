@@ -81,7 +81,7 @@
 			}
 		},
 		created() {
-			// this.getPlayerList(0);
+			this.getPlayerList(0);
 		},
 		mounted() {
 
@@ -112,7 +112,7 @@
 					page: currentPage
 				};
 				this.$http({
-					url: 'api/roles',
+					url: 'xlradmin/api/roles',
 					method: 'GET',
 					data: postData
 				}).then(res => {

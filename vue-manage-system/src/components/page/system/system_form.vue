@@ -141,7 +141,7 @@
 			}
 		},
 		created() {
-			// this.getOrganizationList(1);
+			this.getOrganizationList(1);
 		},
 		mounted() {
 
@@ -172,7 +172,7 @@
 					page: currentPage
 				};
 				this.$http({
-					url: 'api/dept',
+					url: 'xlradmin/api/dept',
 					method: 'GET',
 					data: postData
 				}).then(res => {

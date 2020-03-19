@@ -427,12 +427,20 @@
 					id: self.customerId
 				};
 				self.$http({
-					url: 'clue/client/find',
+					url: 'develop/api/clue/client/find',
 					method: 'GET',
 					data: postData
 				}).then(res => {
-					self.customerInfo = res;
-					self.rateValue = res.starLevel ? parseInt(res.starLevel) : null;
+					if (res.errorCode >= 0) {
+						self.customerInfo = res.data;
+						self.rateValue = res.starLevel ? parseInt(res.starLevel) : null;
+					} else {
+						self.$message({
+							showClose: true,
+							message: res.msg,
+							type: 'error'
+						});
+					}
 				})
 			},
 			/**
@@ -446,11 +454,19 @@
 					relationId: self.customerId
 				};
 				self.$http({
-					url: 'clue/track/list',
+					url: 'develop/api/clue/track/list',
 					method: 'GET',
 					data: postData
 				}).then(res => {
-					self.visitList = res;
+					if (res.errorCode >= 0) {
+						self.visitList = res.data;
+					} else {
+						self.$message({
+							showClose: true,
+							message: res.msg,
+							type: 'error'
+						});
+					}
 				})
 			},
 			/**
@@ -464,11 +480,19 @@
 					blurry: ``
 				};
 				self.$http({
-					url: 'clue/station/list',
+					url: 'develop/api/clue/station/list',
 					method: 'GET',
 					data: postData
 				}).then(res => {
-					self.clueList = res;
+					if (res.errorCode >= 0) {
+						self.clueList = res.data;
+					} else {
+						self.$message({
+							showClose: true,
+							message: res.msg,
+							type: 'error'
+						});
+					}
 				})
 			},
 			/**
