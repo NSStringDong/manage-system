@@ -37,9 +37,9 @@
 		width: 100px;
 	    height: 100px;
 	    /*border-radius: 50%;*/
-	    background-image: url('https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png');
-	    background-repeat: none;
-	    background-size: 100%;
+	    /*background-image: url('https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png');*/
+	    /*background-repeat: none;*/
+	    /*background-size: 100%;*/
 	}
 </style>
 <template>
@@ -135,23 +135,13 @@
 							</ul>
 						</div>
 						<div class="el-main_title">拜访现场照片</div>
-						<div class="el-main_content">
-							<div class="picture-box">
-								<h4>1、场景</h4>
+						<div class="el-main_content" style="flex-direction: column">
+							<div class="picture-box" v-for="(item, index) in sitePics" :key="index">
+								<h4>{{`${index+1}、${item.name}`}}</h4>
 								<p>2019-12-12 11：00</p>
 								<div class="picture-content">
-									<div class="picture-item">
-										
-									</div>
-									<div class="picture-item">
-										
-									</div>
-									<div class="picture-item">
-										
-									</div>
-									<div class="picture-item">
-										
-									</div>
+									<img class="picture-item" v-for="(el, index) in item" :key="index" :src="el.picUrl">
+									<!-- <div class="picture-item"></div> -->
 								</div>
 								<p>广东省深圳市南山区粤海街道科兴科学园</p>
 							</div>
@@ -179,6 +169,7 @@
 	</div>
 </template>
 <script>
+	import {rootUrl} from '../../../utils/httpConfig.js';
 	import '../../../assets/css/content.css';
 	export default {
 		name: 'expand_dataDetail',
@@ -187,15 +178,20 @@
 				message: 0,
 				tabList: [false, false],
 				stationClueId: this.$route.query.stationClueId,
+				picUrl: '',
 				stationClueInfo: Object,
 				stationContactInfo: {
 					clientName: '', 			// 客户名称
 					clientMobile: ''			// 客户联系电话
 				},
-				visitList: []
+				visitList: [],
+				sitePics: [],
+				picName: [`场景`, `车辆或骑手数量`, `安装位置`, `接电位置`]
 			}
 		},
 		created() {
+			this.picUrl = rootUrl();
+			this.picUrl = this.picUrl.substring(0, this.picUrl.length - 1);
 			this.getstationClueInfo();
 		},
 		mounted() {
@@ -249,7 +245,7 @@
 						} else {
 							self.$message({
 								showClose: true,
-								message: `暂无数据`,
+								message: `暂无关联客户信息`,
 								type: 'error'
 							});
 						}
@@ -272,7 +268,37 @@
 					method: 'GET',
 					data: postData
 				}).then(res => {
-					
+					if (res.errorCode >= 0) {
+						if (res.data) {
+							let picArray = self.groupBy(res.data, function(item){
+								return [item.busType];
+							});
+							picArray.forEach((item, index) => {
+								item.name = self.picName[index];
+								item.forEach((el, path) => {
+									if (el.picUrl) {
+										el.picUrl = `${self.picUrl}${el.picUrl}`;
+									} else {
+										// item.splice(path, 1);
+									}
+								})
+							})
+							self.sitePics = picArray;
+							console.info(`picArray`, picArray);
+						} else {
+							self.$message({
+								showClose: true,
+								message: `暂无图片`,
+								type: 'error'
+							});
+						}
+					} else {
+						self.$message({
+							showClose: true,
+							message: res.msg,
+							type: 'error'
+						});
+					}
 				})
 			},
 			/**
@@ -306,6 +332,17 @@
 				if (tab.index == 1) {
 					this.getStationClueRecordList();
 				}
+			},
+			groupBy(array, f) {
+				const groups = {};
+				array.forEach(function (o) {
+					const group = JSON.stringify(f(o));
+					groups[group] = groups[group] || [];
+					groups[group].push(o);
+			  	});
+				return Object.keys(groups).map(function (group) {
+					return groups[group];
+				});
 			} 
 		}
 	}
