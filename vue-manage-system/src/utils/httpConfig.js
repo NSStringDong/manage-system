@@ -1,4 +1,4 @@
-let baseUrl = '/jweb_management/';
+let baseUrl = '';
 if (process.env.NODE_ENV === 'development') {
 	baseUrl = 'http://47.112.158.89/';
 	// baseUrl = 'http://192.168.4.68:8000/api/';

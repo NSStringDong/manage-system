@@ -21,7 +21,7 @@
 							</span>
 						</div>
 						
-						<el-button type="primary" :disabled="isDisable" @click="getUserMenus">登录</el-button>
+						<el-button type="primary" :disabled="isDisable" @click="loginIn">登录</el-button>
 						
 						<div class="remeberCheck" style="padding-top: 10px;">
 							<!-- <el-checkbox style="margin-left:0px;">记住我</el-checkbox> -->
@@ -90,6 +90,14 @@
 			loginIn() {
 				let self = this;
 				let pwdString = this.$md5(self.loginData.password);
+				this.$store.dispatch('Login', this.loginData).then(() => {
+					self.getUserMenus();
+					this.$message.success('登录成功');
+					this.$router.replace({
+						path: '/dashboard'
+					})
+				})
+				/*
 				this.$http({
 					url: "xlradmin/auth/loginWithoutCode",
 					method: 'POST',
@@ -106,6 +114,7 @@
 						self.getUserMenus();
 					}
 				})
+				*/
 			},
 			getUserMenus() {
 				localStorage.setItem('menu', JSON.stringify(menuData));
@@ -123,7 +132,7 @@
 				this.$router.replace({
 				    path: '/dashboard'
 				})
-				// bus.$emit('menu', menuData);
+
 				// this.$http({
 				// 	url: 'xlradmin/api/menus/build',
 				// 	method: 'GET',

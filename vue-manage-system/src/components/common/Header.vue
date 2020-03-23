@@ -47,7 +47,7 @@
                 <!-- 用户名下拉菜单 -->
                 <el-dropdown class="user-name" trigger="click" @command="handleCommand">
                     <span class="el-dropdown-link">
-                        {{username}}
+                        {{user.username}}
                         <i class="el-icon-caret-bottom"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
@@ -59,7 +59,9 @@
     </div>
 </template>
 <script>
+import {mapGetters} from 'vuex';
 import bus from '../common/bus';
+import store from '@/store';
 import router, {resetRouter} from '../../router/index.js';
 export default {
     data() {
@@ -72,13 +74,12 @@ export default {
     },
     computed: {
         onRoutes() {
-            console.log(`侧边路由:${this.$route.path.replace('/', '')}`);
+            // console.log(`侧边路由:${this.$route.path.replace('/', '')}`);
             return this.$route.path.replace('/', '');
         },
-        username() {
-            let username = localStorage.getItem('username');
-            return username ? username : this.name;
-        }
+        ...mapGetters([
+            'user'
+        ])
     },
     methods: {
         // 用户名下拉菜单选择事件

@@ -1,8 +1,8 @@
 import Vue from 'vue';
-// import Vuex from 'vuex';
+import Vuex from 'vuex';
 import App from './App.vue';
 import router from './router';
-// import store from './store';
+import store from './store';
 import ElementUI from 'element-ui';
 import {Message,Loading} from 'element-ui';
 // import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
@@ -15,11 +15,13 @@ import * as dd from 'dingtalk-jsapi'
 import md5 from 'js-md5';
 // import {httpRequest} from './assets/js/httpRequest.js'
 import {httpRequest} from './utils/httpRequest.js';
+import permission from './utils/permission/'
 
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
 
-// Vue.use(Vuex);
+Vue.use(Vuex);
+Vue.use(permission)
 Vue.use(ElementUI, {
     size: 'small'
 });
@@ -39,8 +41,7 @@ router.beforeEach((to, from, next) => {
     console.log(to);
     document.title = `${to.meta.title}`;
     const role = localStorage.getItem('token');
-    next();
-    /*
+    // next();
     if (!role && to.path !== '/login') {
         next('/login');
     } else if (to.meta.permission) {
@@ -49,19 +50,19 @@ router.beforeEach((to, from, next) => {
     } else {
         next();
     }
-    */
 });
 
 new Vue({
     router,
-    // store,
+    store,
     render: h => h(App),
     created() {
         // this.initDD();
     },
     methods: {
+        /*
         initDD: function() {
-            alert(`响应`);
+            // alert(`响应`);
             let self = this;
             alert(`requestAuthCode begin：ding74d9e13970803121a39a90f97fcb1e09`);
             dd.ready(function() {
@@ -90,5 +91,6 @@ new Vue({
                 alert(res);
             })
         }
+        */
     }
 }).$mount('#app');

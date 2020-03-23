@@ -1,29 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import user from './modules/user.js'
+import getters from './getters.js'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-	state: {
-		menuArray: []
+	modules: {
+		user
 	},
-
-	getters: {
-		getMenuArray(state) {
-			return state.menuArray;
-		}
-	},
-
-	actions: {
-		setMenuArray({commit}) {
-			commit('setMenu');
-		}
-	},
-
-	mutations:{
-		setMenu(state, obj) {
-			state.menuArray = obj;
-		}
-	},
+	getters
 });
 export default store;
