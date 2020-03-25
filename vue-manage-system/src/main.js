@@ -15,7 +15,7 @@ import * as dd from 'dingtalk-jsapi'
 import md5 from 'js-md5';
 // import {httpRequest} from './assets/js/httpRequest.js'
 import {httpRequest} from './utils/httpRequest.js';
-import permission from './utils/permission/'
+import permission from './components/permission/';
 
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
