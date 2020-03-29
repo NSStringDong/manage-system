@@ -61,7 +61,7 @@
 							<ul class="content-ul">
 								<li>
 									<span>线索状态：</span>
-									<p>{{stationClueInfo.clueStatusCode}}</p>
+									<p>{{stationClueInfo.clueStatusCode | expandSiteStatus}}</p>
 								</li>
 								<li>
 									<span>线索站点名称：</span>
@@ -77,7 +77,7 @@
 								</li>
 								<li>
 									<span>站点类型：</span>
-									<p>{{stationClueInfo.stationTypeCode}}</p>
+									<p>{{stationClueInfo.stationTypeCode | expandSiteType}}</p>
 								</li>
 								<li>
 									<span>联系方式：</span>
