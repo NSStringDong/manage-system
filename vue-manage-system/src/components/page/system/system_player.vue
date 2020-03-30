@@ -1,6 +1,6 @@
 <style scoped>
 	.el-input,.el-select {
-	    width: 320px; 
+		width: 320px; 
 	}
 </style>
 <template>
@@ -30,27 +30,19 @@
 				<el-table-column align="center" label="操作" width="400px">
 					<template slot-scope="scope">
 						<!-- <el-button v-if="scope.row.permission!='admin'" type="warning" samll @click="goToDetail(scope.row)">分配权限</el-button> -->
-						<el-button v-if="scope.row.permission!='admin'" type="primary" samll @click="showUpdate(scope.row)">编辑</el-button>
+						<el-button v-if="scope.row.permission!='admin'" type="primary" samll @click="showUpdateDataRight(scope.row)">数据权限</el-button>
+						<el-button v-if="scope.row.permission!='admin'" type="primary" samll @click="showUpdateMenu(scope.row)">菜单权限</el-button>
 						<!-- <el-button type="danger" samll @click="showDeleteUser(scope.row)">删除</el-button> -->
 					</template>
 				</el-table-column>
 			</el-table>
 			<div class="block">
-                <el-pagination background @current-change="handleCurrentChange" :current-page.sync="nowPage" :page-size="20" layout="prev, pager, next, jumper" :page-count="totalPage"></el-pagination>
-            </div>
+				<el-pagination background @current-change="handleCurrentChange" :current-page.sync="nowPage" :page-size="20" layout="prev, pager, next, jumper" :page-count="totalPage"></el-pagination>
+			</div>
 			<el-dialog :title="changeText" :visible.sync="isNew" center width="35%">
 				<el-form >
-					<el-form-item label="姓名" :label-width="formLabelWidth">
-						<el-input autocomplete="off"></el-input>
-					</el-form-item>
-					<el-form-item label="手机号" :label-width="formLabelWidth">
-						<el-input autocomplete="off"></el-input>
-					</el-form-item>
-					<el-form-item label="密码" :label-width="formLabelWidth">
-						<el-input autocomplete="off"></el-input>
-					</el-form-item>
-					<el-form-item label="邮箱" :label-width="formLabelWidth">
-						<el-input autocomplete="off"></el-input>
+					<el-form-item label="数据权限" :label-width="formLabelWidth">
+						<el-tree :props="props" :load="loadNode" lazy show-checkbox @check-change="handleCheckChangeData"></el-tree>
 					</el-form-item>
 				</el-form>
 				<div slot="footer" class="dialog-footer">
@@ -77,7 +69,12 @@
 				isNew: false,
 				changeText: '',
 				isUpdate: false,
-				isLoading: false
+				isLoading: false,
+				props: {
+					label: 'name',
+					children: 'zones'
+				},
+				count: 1
 			}
 		},
 		created() {
@@ -137,9 +134,9 @@
 			 * @param  {Object} item 当前选中的用户信息
 			 * @return {Object}      返回信息
 			 */
-			showUpdate(item) {
+			showUpdateDataRight(item) {
 				this.isNew = true;
-				this.changeText = '更新用户信息';
+				this.changeText = '更新用户数据权限';
 				this.isUpdate = true;
 				// this.ruleForm.partnerType = item.pid;
 				// this.ruleForm.organizName = item.name;
@@ -186,36 +183,36 @@
 			},
 			showDeleteUser(item) {
 				this.$confirm(`确认删除${item.username}用户？`,`删除用户`, {
-                    confirmButtonText: '是',
-                    cancelButtonText: '否',
-                    type: 'warning',
-                    distinguishCancelAndClose: true,
-                    // center: true,
-                    beforeClose: (action, instance, done) => {
-                        if (action === 'confirm') {
-                            instance.confirmButtonLoading = true;
-                            instance.confirmButtonText = '执行中...';
-                            setTimeout(() => {
-                                done();
-                                setTimeout(() => {
-                                    this.deleteUser(item);
-                                    instance.confirmButtonLoading = false;
-                                }, 300);
-                            }, 3000);
-                        } else {
-                            done();
-                        }
-                    }
-                }).then(() => {
-                    
-                }).catch(action => {
-                    if (action === 'close'||action === 'cancel') {
-                        this.$message({
-                            type: 'info',
-                            message: `放弃操作`
-                        });
-                    }          
-                });
+					confirmButtonText: '是',
+					cancelButtonText: '否',
+					type: 'warning',
+					distinguishCancelAndClose: true,
+					// center: true,
+					beforeClose: (action, instance, done) => {
+						if (action === 'confirm') {
+							instance.confirmButtonLoading = true;
+							instance.confirmButtonText = '执行中...';
+							setTimeout(() => {
+								done();
+								setTimeout(() => {
+									this.deleteUser(item);
+									instance.confirmButtonLoading = false;
+								}, 300);
+							}, 3000);
+						} else {
+							done();
+						}
+					}
+				}).then(() => {
+					
+				}).catch(action => {
+					if (action === 'close'||action === 'cancel') {
+						this.$message({
+							type: 'info',
+							message: `放弃操作`
+						});
+					}          
+				});
 			},
 			/**
 			 * 删除当前用户
@@ -246,7 +243,43 @@
 			},
 			handleCurrentChange(val) {
 				this.getPlayerList(val);
-			}
+			},
+			handleCheckChangeData(data, checked, indeterminate) {
+				console.log(data, checked, indeterminate);
+			},
+			handleNodeClick(data) {
+        		console.log(data);
+    		},
+			loadNode(node, resolve) {
+				if (node.level === 0) {
+					return resolve([{ name: 'region1' }, { name: 'region2' }]);
+        		}
+        		if (node.level > 3) return resolve([]);
+
+        		var hasChild;
+        		if (node.data.name === 'region1') {
+					hasChild = true;
+        		} else if (node.data.name === 'region2') {
+					hasChild = false;
+        		} else {
+					hasChild = Math.random() > 0.5;
+        		}
+
+        		setTimeout(() => {
+					var data;
+					if (hasChild) {
+						data = [{
+							name: 'zone' + this.count++
+            			}, {
+							name: 'zone' + this.count++
+            			}];
+          			} else {
+            			data = [];
+          			}
+
+          			resolve(data);
+        		}, 500);
+      		}
 		},
 		filters: {
 			

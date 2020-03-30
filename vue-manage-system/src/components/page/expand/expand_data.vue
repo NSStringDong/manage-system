@@ -190,13 +190,13 @@
 							<el-table-column align="center" prop="regionCode" label="所属区域"></el-table-column>
 							<el-table-column align="center" prop="stationTypeCode" label="站点类型" column-key="partnerType" :filters="this.partnerTypeDic" :filter-multiple="false">
 								<template slot-scope="scope">
-									<p>{{scope.row.stationTypeCode | getPartnerType}}</p>
+									<p>{{scope.row.stationTypeCode | expandSiteType}}</p>
 								</template>
 							</el-table-column>
 							<el-table-column align="center" prop="contact" label="联系人"></el-table-column>
 							<el-table-column align="center" label="站点状态" >
 								<template slot-scope="scope">
-									<p>{{scope.row.clueStatusCode | getProrationType}}</p>
+									<p>{{scope.row.clueStatusCode | expandSiteStatus}}</p>
 								</template>
 							</el-table-column>
 							<el-table-column align="center" label="操作" >
@@ -295,7 +295,7 @@
 		<el-dialog title="导入数据" :visible.sync="isReport" center width="480px">
 			<el-form>
 				<el-form-item label="导入文件">
-					<el-input style="width: 220px;"readonly v-model="input" placeholder="选择文件"></el-input>
+					<el-input style="width: 220px;" readonly v-model="input" placeholder="选择文件"></el-input>
 					<el-button style="margin-left: 30px;" type="primary" @click="uploadExcel">选取文件</el-button>
 					<form method="post" enctype="multipart/form-data" ref="file_upload" id="file_upload" v-show="false">
 						<input type="file" ref="upload" @change="tirggerFile($event)" name="refundXls" id="upload">

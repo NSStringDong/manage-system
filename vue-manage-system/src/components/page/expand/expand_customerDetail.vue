@@ -85,7 +85,7 @@
 								</li>
 								<li>
 									<span>客户类型：</span>
-									<p>{{customerInfo.clientTypeCode}}</p>
+									<p>{{customerInfo.clientTypeCode | expandCustomType}}</p>
 								</li>
 								<li>
 									<span>客户归属：</span>
@@ -97,7 +97,7 @@
 								</li>
 								<li>
 									<span>状态：</span>
-									<p>{{customerInfo.clueStatusCode}}</p>
+									<p>{{customerInfo.clueStatusCode | expandCustomStatus}}</p>
 								</li>
 							</ul>
 						</div>
@@ -198,13 +198,13 @@
 							<el-table-column align="center" prop="regionCode" label="所属区域"></el-table-column>
 							<el-table-column align="center" prop="stationTypeCode" label="站点类型" column-key="partnerType" :filters="this.partnerTypeDic" :filter-multiple="false">
 								<template slot-scope="scope">
-									<p>{{scope.row.stationTypeCode | getPartnerType}}</p>
+									<p>{{scope.row.stationTypeCode | expandSiteType}}</p>
 								</template>
 							</el-table-column>
 							<el-table-column align="center" prop="contact" label="联系人"></el-table-column>
 							<el-table-column align="center" label="站点状态" >
 								<template slot-scope="scope">
-									<p>{{scope.row.clueStatusCode | getProrationType}}</p>
+									<p>{{scope.row.clueStatusCode | expandSiteStatus}}</p>
 								</template>
 							</el-table-column>
 							<el-table-column align="center" label="操作" >

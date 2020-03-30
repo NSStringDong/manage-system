@@ -52,8 +52,16 @@
 									<p>{{scope.row.partnerType | getPartnerType}}</p>
 								</template>
 							</el-table-column> -->
-							<el-table-column align="center" prop="clientTypeCode" label="客户类型"></el-table-column>
-							<el-table-column align="center" prop="clueStatusCode" label="客户状态"></el-table-column>
+							<el-table-column align="center" prop="clientTypeCode" label="客户类型">
+								<template slot-scope="scope">
+									<p>{{scope.row.clientTypeCode | expandCustomType}}</p>
+								</template>
+							</el-table-column>
+							<el-table-column align="center" prop="clueStatusCode" label="客户状态">
+								<template slot-scope="scope">
+									<p>{{scope.row.clueStatusCode | expandCustomStatus}}</p>
+								</template>
+							</el-table-column>
 							<el-table-column align="center" prop="estimateDeviceNumber" label="预估设备数"></el-table-column>
 							<el-table-column align="center" label="操作" >
 								<template slot-scope="scope">

@@ -1,3 +1,5 @@
+import { Switch } from "element-ui";
+
 /**
  * 合作伙伴类型
  * @param  {Number} type 类型码
@@ -149,4 +151,127 @@ export function timeCovert(timestamp) {
 	var minute = now.getMinutes(); //返回日期中的分钟数（0到59）
 	var second = now.getSeconds(); //返回日期中的秒数（0到59）
 	return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+}
+
+/**
+ * 拓展-客户类型说明
+ * @param {Number} type 类型码
+ */
+export function expandCustomType(type) {
+	switch (type) {
+		case 3001:
+			return `合伙人或合作方`;
+			break;
+		case 3002:
+			return `政府人员`;
+			break;
+		case 3003:
+			return `物业公司人员`;
+			break;
+		case 3004:
+			return `快递公司人员`;
+			break;
+		case 3005:
+			return `外卖公司人员`;
+			break;
+		case 3006:
+			return `其他`;
+			break;
+		default:
+			return ``;
+			break;
+	}
+}
+/**
+ * 拓展-客户状态
+ * @param {Number} status 状态码
+ */
+export function expandCustomStatus (status) {
+	switch (status) {
+		case 1001:
+			return `待指派`;
+			break;
+		case 1002:
+			return `待跟进`;
+			break;
+		case 1003: 
+			return `洽谈中`;
+			break;
+		case 1004: 
+			return `已签约`;
+			break;
+		case 1005: 
+			return `关闭`;
+			break;
+		default:
+			return ``;
+			break;
+	}
+}
+/**
+ * 拓展-站点类型描述
+ * @param {Number} type 站点类型码
+ */
+export function expandSiteType (type) {
+	switch (type) {
+		case 2001:
+			return `工业园区`;
+			break;
+		case 2002:
+			return `科技园区/写字楼`;
+			break;
+		case 2003:
+			return `商业广场/街区`;
+			break;
+		case 2004:
+			return `大学校园`;
+			break;
+		case 2005:
+			return `快递站点`;
+			break;
+		case 2006:
+			return `外卖站点`;
+			break;
+		case 2007:
+			return `城中村/城乡结合部`;
+			break;
+		case 2008:
+			return `高层小区`;
+			break;
+		case 2009:
+			return `公寓/宿舍`;
+			break;
+		case 2010:
+			return `老旧小区/底层小区`;
+			break;
+		case 2011:
+			return `其他`;
+			break;
+		default:
+			return ``;
+			break;
+	}
+}
+
+export function expandSiteStatus (status) {
+	switch (status) {
+		case 1001:
+			return `待指派`;
+			break;
+		case 1002:
+			return `待跟进`;
+			break;
+		case 1003: 
+			return `洽谈中`;
+			break;
+		case 1004: 
+			return `已签约`;
+			break;
+		case 1005: 
+			return `关闭`;
+			break;
+		default:
+			return ``;
+			break;
+	}
 }
