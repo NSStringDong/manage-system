@@ -194,7 +194,7 @@
 								</template>
 							</el-table-column>
 							<el-table-column align="center" prop="contact" label="联系人"></el-table-column>
-							<el-table-column align="center" label="站点状态" >
+							<el-table-column align="center" prop="clueStatusCode" label="站点状态" >
 								<template slot-scope="scope">
 									<p>{{scope.row.clueStatusCode | expandSiteStatus}}</p>
 								</template>

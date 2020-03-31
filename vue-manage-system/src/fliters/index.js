@@ -157,7 +157,7 @@ export function timeCovert(timestamp) {
  * 拓展-客户类型说明
  * @param {Number} type 类型码
  */
-export function expandCustomType(type) {
+export let expandCustomType = function(type) {
 	switch (type) {
 		case 3001:
 			return `合伙人或合作方`;
@@ -186,7 +186,7 @@ export function expandCustomType(type) {
  * 拓展-客户状态
  * @param {Number} status 状态码
  */
-export function expandCustomStatus (status) {
+export let expandCustomStatus = function(status) {
 	switch (status) {
 		case 1001:
 			return `待指派`;
@@ -212,7 +212,7 @@ export function expandCustomStatus (status) {
  * 拓展-站点类型描述
  * @param {Number} type 站点类型码
  */
-export function expandSiteType (type) {
+export let expandSiteType = function(type) {
 	switch (type) {
 		case 2001:
 			return `工业园区`;
@@ -253,7 +253,7 @@ export function expandSiteType (type) {
 	}
 }
 
-export function expandSiteStatus (status) {
+export let expandSiteStatus = function(status) {
 	switch (status) {
 		case 1001:
 			return `待指派`;
