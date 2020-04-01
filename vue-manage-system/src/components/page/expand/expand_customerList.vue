@@ -37,27 +37,22 @@
 					<div class="search-content">
 						<div class="search-input">
 							<el-input placeholder='请输入内容' v-model="key" clearable>
-								<el-button slot="append" icon="el-icon-search"></el-button>
+								<el-button slot="append" icon="el-icon-search" @click="getCustomerList(0)"></el-button>
 							</el-input>
 						</div>
 						<div class="search-btn">
-							<el-button class="new-btn" type="primary">新建</el-button>
+							<!-- <el-button class="new-btn" type="primary">新建</el-button> -->
 						</div>
 					</div>
 					<div class="table-content">
 						<el-table :data="tableData" border stripe @cell-dblclick="goToDetail" @filter-change="filterHandler">
 							<el-table-column align="center" prop="clientName" label="客户名称"></el-table-column>
-							<!-- <el-table-column align="center" prop="clientTypeCode" label="客户类型" column-key="clientTypeCode" :filters="this.partnerTypeDic" :filter-multiple="false">
-								<template slot-scope="scope">
-									<p>{{scope.row.partnerType | getPartnerType}}</p>
-								</template>
-							</el-table-column> -->
-							<el-table-column align="center" prop="clientTypeCode" label="客户类型">
+							<el-table-column align="center" prop="clientTypeCode" label="客户类型" column-key="clueStatusCode" :filters="this.customerTypeDic" :filter-multiple="false">
 								<template slot-scope="scope">
 									<p>{{scope.row.clientTypeCode | expandCustomType}}</p>
 								</template>
 							</el-table-column>
-							<el-table-column align="center" prop="clueStatusCode" label="客户状态">
+							<el-table-column align="center" prop="clueStatusCode" label="客户状态" column-key="clueStatusCode" :filters="this.customerStatusDic" :filter-multiple="false">
 								<template slot-scope="scope">
 									<p>{{scope.row.clueStatusCode | expandCustomStatus}}</p>
 								</template>
@@ -66,7 +61,7 @@
 							<el-table-column align="center" label="操作" >
 								<template slot-scope="scope">
 									<el-button type="success" plain @click="goToDetail(scope.row)">详情</el-button>
-									<el-button type="primary" samll>编辑</el-button>
+									<!-- <el-button type="primary" samll>编辑</el-button> -->
 									<el-button type="danger" samll>删除</el-button>
 								</template>
 							</el-table-column>
@@ -84,7 +79,7 @@
 	</div>
 </template>
 <script type="text/javascript">
-	import {requestData} from '../../../utils/data.js';
+	// import {requestData} from '../../../utils/data.js';
 	export default {
 		name: 'expand_customer',
 		data() {
@@ -94,36 +89,47 @@
 				tableData: [],
 				nowPage: null,
 				totalPage: 0,
-				partnerTypeDic: Object.freeze([{
-					text: '小绿人',
-					value: '0'
+				customerTypeDic: Object.freeze([{
+					text: '合伙人或合作方',
+					value: '3001'
 				}, {
-					text: '电动汽车物业',
-					value: '1'
+					text: '政府人员',
+					value: '3002'
 				}, {
-					text: '安装商',
-					value: '2'
+					text: '物业公司人员',
+					value: '3003'
 				}, {
-					text: '4S店',
-					value: '3'
+					text: '快递公司人员',
+					value: '3004'
 				}, {
-					text: '车企',
-					value: '4'
+					text: '外卖公司人员',
+					value: '3005'
 				}, {
-					text: '自行车物业',
-					value: '5'
-				}, {
-					text: '自行车站主',
-					value: '6'
-				}, {
-					text: '代理商',
-					value: '7'
+					text: '其他',
+					value: '3006'
 				}]),
-				partnerType: ''
+				customerType: '',
+				customerStatusDic: Object.freeze([{
+					text: '待指派',
+					value: '1001'
+				}, {
+					text: '待跟进',
+					value: '1002'
+				}, {
+					text: '洽谈中',
+					value: '1003'
+				}, {
+					text: '已签约',
+					value: '1004'
+				}, {
+					text: '关闭',
+					value: '1005'
+				}]),
+				customerStatus: ''
 			}
 		},
 		created() {
-			this.getCustomerList(1);
+			this.getCustomerList(0);
 		},
 		mounted() {
 
@@ -142,19 +148,20 @@
 				self.nowPage = currentPage;
 				self.tableData = [];
 				let postData = {
-					num: 20,
+					blurry: self.key,
+					size: 20,
 					page: currentPage,
-					key: self.key,
-					partnerType: self.partnerType
+					clueStatusCode: self.customerStatus
 				};
 				
 				this.$http({
-					url: 'develop/api/clue/client/list',
+					url: 'develop/api/clue/client/query/list',
 					method: 'GET',
-					data: ""
+					data: postData
 				}).then(res => {
 					if (res.errorCode >= 0) {
-						self.tableData = res.data;
+						self.tableData = res.data.content;
+						self.totalPage = /*res.totalElements % 20;*/Math.ceil(res.data.totalElements / 20);
 					} else {
 						self.$message({
 							showClose: true,
@@ -180,14 +187,24 @@
 					row = i;
 					val = filters[i];
 				}
-				self.partnerType = val[0];
-				if (self.partnerType== null || self.partnerType == undefined) {
-					self.partnerType = '';
-				}
+				console.info('value:'+row);
+                if (row == 'clueStatusCode') {
+                    // 客户状态
+                    self.customerStatus = val[0];
+					if (self.customerStatus== null || self.customerStatus == undefined) {
+						self.customerStatus = '';
+					}
+                } else if (row == 'clientTypeCode') {
+                	// 客户类型
+                	self.customerType = val[0];
+					if (self.customerType== null || self.customerType == undefined) {
+						self.customerType = '';
+					}
+                }
 				self.getCustomerList(self.nowPage);
 			},
 			handleCurrentChange(val) {
-				// this.getSalaryList(val);
+				this.getCustomerList(val);
 			},
 			tabPress(tab) {
 				console.log(tab.index);

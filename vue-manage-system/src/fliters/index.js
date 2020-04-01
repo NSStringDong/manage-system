@@ -158,7 +158,7 @@ export function timeCovert(timestamp) {
  * @param {Number} type 类型码
  */
 export let expandCustomType = function(type) {
-	switch (type) {
+	switch (parseInt(type)) {
 		case 3001:
 			return `合伙人或合作方`;
 			break;
@@ -187,7 +187,7 @@ export let expandCustomType = function(type) {
  * @param {Number} status 状态码
  */
 export let expandCustomStatus = function(status) {
-	switch (status) {
+	switch (parseInt(status)) {
 		case 1001:
 			return `待指派`;
 			break;
@@ -213,7 +213,7 @@ export let expandCustomStatus = function(status) {
  * @param {Number} type 站点类型码
  */
 export let expandSiteType = function(type) {
-	switch (type) {
+	switch (parseInt(type)) {
 		case 2001:
 			return `工业园区`;
 			break;
@@ -254,7 +254,7 @@ export let expandSiteType = function(type) {
 }
 
 export let expandSiteStatus = function(status) {
-	switch (status) {
+	switch (parseInt(status)) {
 		case 1001:
 			return `待指派`;
 			break;
